@@ -141,8 +141,11 @@ export function Booking() {
         throw new Error("Booking failed");
       }
 
-      // Success would redirect to Stripe or show confirmation
-      // For now, the API doesn't exist, so we'll hit the error path
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+        return; // Don't reset isSubmitting — we're navigating away
+      }
     } catch {
       setSubmitError(
         "We couldn\u2019t process your booking right now. Please try again or contact us directly."
