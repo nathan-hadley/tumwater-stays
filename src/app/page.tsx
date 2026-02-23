@@ -1,16 +1,14 @@
 import { Nav } from "@/components/nav";
+import { Hero } from "@/components/sections/hero";
+import { Units } from "@/components/sections/units";
 
 export default function Home() {
   return (
     <>
       <Nav />
       <main>
-        <section id="hero" className="min-h-screen">
-          {/* Hero */}
-        </section>
-        <section id="units" className="py-20 px-4">
-          {/* Units */}
-        </section>
+        <Hero />
+        <Units />
         <section id="availability" className="py-20 px-4 bg-surface-dark">
           {/* Availability */}
         </section>
