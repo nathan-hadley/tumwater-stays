@@ -8,6 +8,7 @@ import { Reviews } from "@/components/sections/reviews";
 import { HouseRules } from "@/components/sections/house-rules";
 import { Contact } from "@/components/sections/contact";
 import { Footer } from "@/components/footer";
+import { ScrollToTop } from "@/components/scroll-to-top";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <ScrollToTop />
     </>
   );
 }

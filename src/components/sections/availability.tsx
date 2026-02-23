@@ -7,7 +7,7 @@ export function Availability() {
       <div className="max-w-4xl mx-auto">
         {/* Section heading */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-normal text-foreground">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-foreground">
             Availability
           </h2>
           <div className="mt-3 mx-auto h-1 w-16 rounded-full bg-accent-warm" />

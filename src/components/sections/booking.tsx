@@ -160,7 +160,7 @@ export function Booking() {
       <div className="max-w-5xl mx-auto">
         {/* Heading */}
         <h2
-          className="text-3xl md:text-4xl text-center mb-10 text-foreground"
+          className="text-3xl md:text-4xl lg:text-5xl text-center mb-10 text-foreground"
           style={{
             fontFamily: "var(--font-heading), ui-serif, Georgia, serif",
           }}

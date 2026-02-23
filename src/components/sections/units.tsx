@@ -11,7 +11,7 @@ export function Units() {
         {/* Section heading */}
         <div className="text-center mb-12">
           <h2
-            className="text-4xl md:text-5xl font-normal text-foreground"
+            className="text-3xl md:text-4xl lg:text-5xl font-normal text-foreground"
             style={{
               fontFamily: "var(--font-heading), ui-serif, Georgia, serif",
             }}
