@@ -4,7 +4,7 @@
 
 - [ ] **Stripe** — Create account at stripe.com, get test + live API keys
 - [ ] **Resend** — Create account at resend.com, verify sending domain, get API key
-- [ ] **Cloudflare** — Create account, set up Workers project
+- [ ] **Vercel** — Create account at vercel.com, import the GitHub repo
 - [ ] **Google Voice** — Set up a number for guest calls/texts
 - [ ] **PriceLabs** — Email support@pricelabs.co to activate Customer API (~$2/mo for 2 listings)
 
@@ -25,20 +25,18 @@
 
 ## Domain & Deployment
 
-- [ ] **Buy domain** — Purchase via Cloudflare Registrar (tumwaterstays.com or similar)
-- [ ] **Set env secrets on Cloudflare** — Run for each:
-  ```
-  npx wrangler secret put STRIPE_SECRET_KEY
-  npx wrangler secret put RESEND_API_KEY
-  npx wrangler secret put PRICELABS_API_KEY
-  npx wrangler secret put STUDIO_ICAL_URL
-  npx wrangler secret put ONEBR_ICAL_URL
-  npx wrangler secret put HOST_EMAIL
-  npx wrangler secret put NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-  npx wrangler secret put NEXT_PUBLIC_GOOGLE_VOICE_NUMBER
-  ```
-- [ ] **Deploy** — `npm run deploy`
-- [ ] **Configure custom domain** — Add domain to Workers project in Cloudflare dashboard
+- [ ] **Buy domain** — Purchase via any registrar (Namecheap, Cloudflare, Google Domains, etc.)
+- [ ] **Set env variables on Vercel** — Add these in the Vercel dashboard under Project > Settings > Environment Variables:
+  - `STRIPE_SECRET_KEY`
+  - `RESEND_API_KEY`
+  - `PRICELABS_API_KEY`
+  - `STUDIO_ICAL_URL`
+  - `ONEBR_ICAL_URL`
+  - `HOST_EMAIL`
+  - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+  - `NEXT_PUBLIC_GOOGLE_VOICE_NUMBER`
+- [ ] **Deploy** — Push to `main` branch; Vercel deploys automatically
+- [ ] **Configure custom domain** — Add domain in Vercel dashboard under Project > Settings > Domains
 - [ ] **Verify Resend domain** — Set up DNS records so emails come from your domain instead of resend.dev
 
 ## Post-Launch
