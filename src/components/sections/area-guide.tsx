@@ -6,6 +6,7 @@ import {
   Trees,
   Heart,
   ShoppingBag,
+  Mountain,
   type LucideIcon,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,6 +16,7 @@ const iconMap: Record<string, LucideIcon> = {
   utensils: Utensils,
   trees: Trees,
   heart: Heart,
+  mountain: Mountain,
   "shopping-bag": ShoppingBag,
 };
 

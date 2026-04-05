@@ -51,6 +51,12 @@ export const areaGuide: GuideItem[] = [
     icon: "utensils",
   },
   {
+    name: "Lupine Market & Café",
+    category: "dining",
+    description: "Café and market on Icicle Road from the Argonaut folks. Great coffee and baked goods. Open Tues–Sat, 8am–4pm.",
+    icon: "utensils",
+  },
+  {
     name: "Icicle Gorge Trail",
     category: "outdoors",
     description: "Easy loop trail along Icicle Creek. Beautiful in every season.",

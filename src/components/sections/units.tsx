@@ -28,7 +28,7 @@ export function Units() {
         {/* Unit cards grid */}
         <div className="grid md:grid-cols-2 gap-8">
           {units.map((unit) => (
-            <Card key={unit.id} className="overflow-hidden py-0">
+            <Card key={unit.id} className="overflow-hidden py-0 flex flex-col h-full">
               {/* Photo carousel — no horizontal padding */}
               <div className="px-0">
                 <PhotoCarousel photos={getUnitPhotos(unit.id)} alt={unit.name} />
@@ -47,7 +47,7 @@ export function Units() {
                 <p className="text-muted-foreground italic">{unit.tagline}</p>
               </CardHeader>
 
-              <CardContent className="flex flex-col gap-4">
+              <CardContent className="flex flex-col gap-4 flex-1 pb-6">
                 <p className="text-foreground leading-relaxed">
                   {unit.description}
                 </p>
@@ -64,7 +64,7 @@ export function Units() {
                 {/* Book CTA */}
                 <Button
                   asChild
-                  className="mt-2 bg-accent-warm text-white hover:bg-accent-warm-dark w-full sm:w-auto"
+                  className="mt-auto bg-accent-warm text-white hover:bg-accent-warm-dark w-full sm:w-auto"
                   size="lg"
                 >
                   <a href="#booking">Book This Unit</a>
