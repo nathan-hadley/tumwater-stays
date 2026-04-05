@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   startOfMonth,
@@ -14,7 +14,6 @@ import {
   isAfter,
   startOfDay,
   getDay,
-  isWithinInterval,
 } from "date-fns";
 import { cn } from "@/lib/utils";
 
@@ -84,42 +83,30 @@ export function DateRangePicker({
 
   const today = startOfDay(new Date());
 
-  const handleDayClick = useCallback(
-    (day: Date) => {
-      if (!selectingCheckOut || !checkIn) {
-        // Selecting check-in
+  const handleDayClick = (day: Date) => {
+    if (!selectingCheckOut || !checkIn) {
+      onCheckInChange(day);
+      onCheckOutChange(null);
+      setSelectingCheckOut(true);
+    } else {
+      if (isBefore(day, checkIn) || isSameDay(day, checkIn)) {
+        onCheckInChange(day);
+        onCheckOutChange(null);
+        setSelectingCheckOut(true);
+      } else if (hasBookedDateInRange(checkIn, day, bookedRanges)) {
         onCheckInChange(day);
         onCheckOutChange(null);
         setSelectingCheckOut(true);
       } else {
-        // Selecting check-out
-        if (isBefore(day, checkIn) || isSameDay(day, checkIn)) {
-          // Reset: treat as new check-in
-          onCheckInChange(day);
-          onCheckOutChange(null);
-          setSelectingCheckOut(true);
-        } else if (hasBookedDateInRange(checkIn, day, bookedRanges)) {
-          // Booked date in range: reset to this as new check-in
-          onCheckInChange(day);
-          onCheckOutChange(null);
-          setSelectingCheckOut(true);
-        } else {
-          onCheckOutChange(day);
-          setSelectingCheckOut(false);
-        }
+        onCheckOutChange(day);
+        setSelectingCheckOut(false);
       }
-    },
-    [checkIn, selectingCheckOut, bookedRanges, onCheckInChange, onCheckOutChange]
-  );
+    }
+  };
 
   const prevMonth = () => setBaseMonth((m) => subMonths(m, 1));
   const nextMonth = () => setBaseMonth((m) => addMonths(m, 1));
 
-  const selectionLabel = !checkIn
-    ? "Select check-in date"
-    : selectingCheckOut
-      ? "Select check-out date"
-      : `${format(checkIn, "MMM d")} \u2013 ${checkOut ? format(checkOut, "MMM d") : ""}`;
 
   return (
     <div>

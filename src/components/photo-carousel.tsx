@@ -1,7 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -16,30 +17,15 @@ export function PhotoCarousel({ photos, alt }: PhotoCarouselProps) {
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
 
-  const scrollPrev = useCallback(() => {
-    emblaApi?.scrollPrev();
-  }, [emblaApi]);
-
-  const scrollNext = useCallback(() => {
-    emblaApi?.scrollNext();
-  }, [emblaApi]);
-
-  const scrollTo = useCallback(
-    (index: number) => {
-      emblaApi?.scrollTo(index);
-    },
-    [emblaApi]
-  );
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-    setCanScrollPrev(emblaApi.canScrollPrev());
-    setCanScrollNext(emblaApi.canScrollNext());
-  }, [emblaApi]);
-
   useEffect(() => {
     if (!emblaApi) return;
+
+    const onSelect = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+      setCanScrollPrev(emblaApi.canScrollPrev());
+      setCanScrollNext(emblaApi.canScrollNext());
+    };
+
     onSelect();
     emblaApi.on("select", onSelect);
     emblaApi.on("reInit", onSelect);
@@ -47,12 +33,7 @@ export function PhotoCarousel({ photos, alt }: PhotoCarouselProps) {
       emblaApi.off("select", onSelect);
       emblaApi.off("reInit", onSelect);
     };
-  }, [emblaApi, onSelect]);
-
-  // Extract filename from path for placeholder text
-  const getFilename = (path: string) => {
-    return path.split("/").pop() || path;
-  };
+  }, [emblaApi]);
 
   return (
     <div className="relative rounded-lg overflow-hidden">
@@ -61,15 +42,15 @@ export function PhotoCarousel({ photos, alt }: PhotoCarouselProps) {
         <div className="flex">
           {photos.map((photo, index) => (
             <div key={photo} className="flex-[0_0_100%] min-w-0">
-              <div className="aspect-[4/3] relative bg-gradient-to-br from-primary/20 via-primary/10 to-accent-warm/20 flex items-center justify-center">
-                <div className="text-center px-4">
-                  <div className="text-sm text-muted-foreground font-medium">
-                    {alt}
-                  </div>
-                  <div className="text-xs text-muted-foreground/70 mt-1">
-                    {getFilename(photo)}
-                  </div>
-                </div>
+              <div className="aspect-[4/3] relative">
+                <Image
+                  src={photo}
+                  alt={`${alt} - photo ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  priority={index === 0}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
               </div>
             </div>
           ))}
@@ -78,7 +59,7 @@ export function PhotoCarousel({ photos, alt }: PhotoCarouselProps) {
 
       {/* Previous button */}
       <button
-        onClick={scrollPrev}
+        onClick={() => emblaApi?.scrollPrev()}
         disabled={!canScrollPrev}
         aria-label="Previous photo"
         className="absolute left-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60 disabled:opacity-30"
@@ -88,7 +69,7 @@ export function PhotoCarousel({ photos, alt }: PhotoCarouselProps) {
 
       {/* Next button */}
       <button
-        onClick={scrollNext}
+        onClick={() => emblaApi?.scrollNext()}
         disabled={!canScrollNext}
         aria-label="Next photo"
         className="absolute right-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60 disabled:opacity-30"
@@ -101,7 +82,7 @@ export function PhotoCarousel({ photos, alt }: PhotoCarouselProps) {
         {photos.map((_, index) => (
           <button
             key={index}
-            onClick={() => scrollTo(index)}
+            onClick={() => emblaApi?.scrollTo(index)}
             aria-label={`Go to photo ${index + 1}`}
             className={cn(
               "h-2 w-2 rounded-full transition-all",

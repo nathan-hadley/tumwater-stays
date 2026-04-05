@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 
 export function Hero() {
@@ -6,6 +7,16 @@ export function Hero() {
       id="hero"
       className="relative min-h-screen overflow-hidden bg-gradient-to-br from-[#1E3329] via-[#2D4A3E] to-[#1a2f26]"
     >
+      {/* Background image */}
+      <Image
+        src="/photos/hero/hero.jpeg"
+        alt="Mountain landscape near Leavenworth, Washington"
+        fill
+        priority
+        className="object-cover"
+        sizes="100vw"
+      />
+
       {/* Dark overlay for text contrast */}
       <div className="absolute inset-0 bg-black/30" />
 

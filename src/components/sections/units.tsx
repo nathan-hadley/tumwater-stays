@@ -1,4 +1,5 @@
 import { units } from "@/data/units";
+import { getUnitPhotos } from "@/data/photos";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -30,7 +31,7 @@ export function Units() {
             <Card key={unit.id} className="overflow-hidden py-0">
               {/* Photo carousel — no horizontal padding */}
               <div className="px-0">
-                <PhotoCarousel photos={unit.photos} alt={unit.name} />
+                <PhotoCarousel photos={getUnitPhotos(unit.id)} alt={unit.name} />
               </div>
 
               <CardHeader className="pb-0">

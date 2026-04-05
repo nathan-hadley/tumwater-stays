@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CheckCircle } from "lucide-react";
 import { stripe } from "@/lib/stripe";
@@ -78,12 +79,12 @@ export default async function BookingSuccessPage({
               Your payment was received. You will receive a confirmation email
               with details and next steps shortly.
             </p>
-            <a
+            <Link
               href="/"
               className="inline-block rounded-md bg-accent-warm px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-warm-dark"
             >
               Back to Home
-            </a>
+            </Link>
           </div>
         </div>
       </main>
@@ -157,12 +158,12 @@ export default async function BookingSuccessPage({
             with check-in details and next steps.
           </p>
 
-          <a
+          <Link
             href="/"
             className="inline-block rounded-md bg-accent-warm px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-warm-dark"
           >
             Back to Home
-          </a>
+          </Link>
         </div>
       </div>
     </main>

@@ -1,7 +1,6 @@
 "use client";
 
 import { format, parseISO } from "date-fns";
-import { cn } from "@/lib/utils";
 
 export type NightlyRate = {
   date: string;

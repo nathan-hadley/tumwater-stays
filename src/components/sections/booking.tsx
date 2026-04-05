@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { units } from "@/data/units";
 import { cn } from "@/lib/utils";
@@ -38,30 +38,25 @@ export function Booking() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // Reset guests when unit changes
-  const handleUnitChange = useCallback((unitId: "studio" | "onebr") => {
+  const handleUnitChange = (unitId: "studio" | "onebr") => {
     setSelectedUnit(unitId);
     setGuests(DEFAULT_GUESTS);
     setCheckIn(null);
     setCheckOut(null);
     setRates(null);
     setRatesError(null);
-  }, []);
+  };
 
-  // Reset check-out when check-in changes
-  const handleCheckInChange = useCallback(
-    (date: Date | null) => {
-      setCheckIn(date);
-      setCheckOut(null);
-      setRates(null);
-      setRatesError(null);
-    },
-    []
-  );
+  const handleCheckInChange = (date: Date | null) => {
+    setCheckIn(date);
+    setCheckOut(null);
+    setRates(null);
+    setRatesError(null);
+  };
 
-  const handleCheckOutChange = useCallback((date: Date | null) => {
+  const handleCheckOutChange = (date: Date | null) => {
     setCheckOut(date);
-  }, []);
+  };
 
   // Fetch pricing whenever unit + checkIn + checkOut are all set
   useEffect(() => {

@@ -1,19 +1,14 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { navItems } from "@/data/navigation";
 
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMenu = useCallback(() => {
-    setIsOpen((prev) => !prev);
-  }, []);
-
-  const closeMenu = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+  const toggleMenu = () => setIsOpen((prev) => !prev);
+  const closeMenu = () => setIsOpen(false);
 
   const bookNowItem = navItems.find((item) => item.isButton);
   const regularItems = navItems.filter((item) => !item.isButton);
