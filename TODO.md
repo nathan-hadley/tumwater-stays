@@ -13,10 +13,10 @@
 - [X] **Hero photo** — Add a Cascade mountain/property photo to `public/photos/hero/hero.jpg`
 - [X] **Studio photos** — Add photos to `public/photos/studio/` (update filenames in `src/data/units.ts`)
 - [X] **1BR photos** — Add photos to `public/photos/onebr/` (update filenames in `src/data/units.ts`)
-- [ ] **Reviews** — Copy real Airbnb reviews into `src/data/reviews.ts`
-- [ ] **Area guide** — Customize recommendations in `src/data/area-guide.ts`
-- [ ] **House rules** — Update rules/policies in `src/data/house-rules.ts`
-- [ ] **Unit descriptions** — Refine descriptions and amenities in `src/data/units.ts`
+- [X] **Reviews** — Copy real Airbnb reviews into `src/data/reviews.ts`
+- [X] **Area guide** — Customize recommendations in `src/data/area-guide.ts`
+- [X] **House rules** — Update rules/policies in `src/data/house-rules.ts`
+- [X] **Unit descriptions** — Refine descriptions and amenities in `src/data/units.ts`
 
 ## Airbnb Integration
 
