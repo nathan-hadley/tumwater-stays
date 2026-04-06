@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   startOfMonth,
@@ -16,11 +16,7 @@ import {
   getDay,
 } from "date-fns";
 import { cn } from "@/lib/utils";
-
-type BookedRange = {
-  start: Date;
-  end: Date;
-};
+import { useAvailability, type BookedRange } from "@/hooks/use-availability";
 
 type Props = {
   unitId: "studio" | "onebr";
@@ -56,30 +52,8 @@ export function DateRangePicker({
   onCheckOutChange,
 }: Props) {
   const [baseMonth, setBaseMonth] = useState(() => startOfMonth(new Date()));
-  const [bookedRanges, setBookedRanges] = useState<BookedRange[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { bookedRanges, loading } = useAvailability(unitId);
   const [selectingCheckOut, setSelectingCheckOut] = useState(false);
-
-  useEffect(() => {
-    async function fetchAvailability() {
-      setLoading(true);
-      try {
-        const res = await fetch(`/api/availability?unit=${unitId}`);
-        const data = await res.json();
-        setBookedRanges(
-          data.bookedRanges.map((r: { start: string; end: string }) => ({
-            start: new Date(r.start),
-            end: new Date(r.end),
-          }))
-        );
-      } catch {
-        setBookedRanges([]);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchAvailability();
-  }, [unitId]);
 
   const today = startOfDay(new Date());
 

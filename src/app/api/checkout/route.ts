@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { units } from "@/data/units";
+import { fetchNightlyRates } from "@/lib/pricelabs";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -10,21 +11,12 @@ export async function POST(request: NextRequest) {
   const unitData = units.find((u) => u.id === unit);
   const unitName = unitData?.name ?? unit;
 
-  // Calculate total from rates (re-fetch server-side to prevent client tampering)
+  // Calculate total from rates (server-side to prevent client tampering)
   let totalCents: number;
   try {
-    const pricingUrl = new URL("/api/pricing", request.nextUrl.origin);
-    pricingUrl.searchParams.set("unit", unit);
-    pricingUrl.searchParams.set("checkIn", checkIn);
-    pricingUrl.searchParams.set("checkOut", checkOut);
-
-    const pricingRes = await fetch(pricingUrl.toString());
-    if (!pricingRes.ok) throw new Error("Pricing unavailable");
-
-    const pricingData = await pricingRes.json();
-    totalCents = pricingData.total;
+    const rates = await fetchNightlyRates(unit, checkIn, checkOut);
+    totalCents = rates.reduce((sum, r) => sum + r.rate, 0);
   } catch {
-    // If pricing fetch fails, reject the checkout
     return NextResponse.json(
       { error: "Unable to verify pricing. Please try again." },
       { status: 502 }

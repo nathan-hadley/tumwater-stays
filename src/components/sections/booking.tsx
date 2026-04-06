@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { format } from "date-fns";
 import { units } from "@/data/units";
 import { cn } from "@/lib/utils";
+import { usePricing } from "@/hooks/use-pricing";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,10 +13,7 @@ import {
   type GuestCounts,
 } from "@/components/guest-count-picker";
 import { DateRangePicker } from "@/components/date-range-picker";
-import {
-  PricingBreakdown,
-  type NightlyRate,
-} from "@/components/pricing-breakdown";
+import { PricingBreakdown } from "@/components/pricing-breakdown";
 
 const DEFAULT_GUESTS: GuestCounts = { adults: 1, children: 0, infants: 0 };
 
@@ -29,10 +27,7 @@ export function Booking() {
   const [guestName, setGuestName] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
 
-  // Pricing state
-  const [rates, setRates] = useState<NightlyRate[] | null>(null);
-  const [isLoadingRates, setIsLoadingRates] = useState(false);
-  const [ratesError, setRatesError] = useState<string | null>(null);
+  const { rates, isLoading: isLoadingRates, error: ratesError } = usePricing(selectedUnit, checkIn, checkOut);
 
   // Submission state
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,64 +38,16 @@ export function Booking() {
     setGuests(DEFAULT_GUESTS);
     setCheckIn(null);
     setCheckOut(null);
-    setRates(null);
-    setRatesError(null);
   };
 
   const handleCheckInChange = (date: Date | null) => {
     setCheckIn(date);
     setCheckOut(null);
-    setRates(null);
-    setRatesError(null);
   };
 
   const handleCheckOutChange = (date: Date | null) => {
     setCheckOut(date);
   };
-
-  // Fetch pricing whenever unit + checkIn + checkOut are all set
-  useEffect(() => {
-    if (!checkIn || !checkOut) {
-      setRates(null);
-      setRatesError(null);
-      return;
-    }
-
-    const controller = new AbortController();
-
-    async function fetchPricing() {
-      setIsLoadingRates(true);
-      setRatesError(null);
-
-      try {
-        const params = new URLSearchParams({
-          unit: selectedUnit,
-          checkIn: format(checkIn!, "yyyy-MM-dd"),
-          checkOut: format(checkOut!, "yyyy-MM-dd"),
-        });
-
-        const res = await fetch(`/api/pricing?${params}`, {
-          signal: controller.signal,
-        });
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch pricing");
-        }
-
-        const data = await res.json();
-        setRates(data.rates);
-      } catch (err) {
-        if (err instanceof DOMException && err.name === "AbortError") return;
-        setRatesError("Unable to load pricing");
-      } finally {
-        setIsLoadingRates(false);
-      }
-    }
-
-    fetchPricing();
-
-    return () => controller.abort();
-  }, [selectedUnit, checkIn, checkOut]);
 
   // Form validation
   const isFormValid =
@@ -232,7 +179,7 @@ export function Booking() {
                   <PricingBreakdown
                     rates={rates}
                     isLoading={isLoadingRates}
-                    error={ratesError}
+                    error={ratesError ? "Unable to load pricing" : null}
                   />
                 ) : (
                   <p className="text-sm text-muted-foreground">
