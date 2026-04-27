@@ -37,7 +37,7 @@ export const units: Unit[] = [
   },
   {
     id: "onebr",
-    name: "The One Bedroom",
+    name: "The Suite",
     tagline: "Spacious suite with room for the whole family",
     description: "A thoughtfully designed B&B suite featuring a spacious living area with large windows, a cozy bedroom with work station, and full bathroom. A comfy air mattress and pack-n-play are available for extra guests. Simple in-suite breakfast foods are provided, along with a Nespresso coffee station, fridge, toaster, and microwave. Samsung Frame smart TV with streaming apps. Private entrance and deck with views over orchards down the Wenatchee valley.",
     amenities: [

@@ -5,7 +5,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Tumwater Stays | Direct Booking in Leavenworth, WA",
   description:
-    "Book direct and save at Tumwater Stays — two cozy vacation rentals in Leavenworth, Washington. Studio and one-bedroom units with mountain town charm.",
+    "Book direct and save at Tumwater Stays — two cozy vacation rentals in Leavenworth, Washington. Studio and Suite units with mountain town charm.",
   keywords: [
     "Leavenworth",
     "vacation rental",
