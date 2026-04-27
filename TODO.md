@@ -21,7 +21,7 @@
 ## Airbnb Integration
 
 - [ ] **Get iCal URLs** — Airbnb > Listing > Availability > Export Calendar (one per unit)
-- [ ] **Add Airbnb listing links** — Update footer href in `src/components/footer.tsx`
+- [X] **Add Airbnb listing links** — Update footer href in `src/components/footer.tsx`
 
 ## Domain & Deployment
 

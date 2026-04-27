@@ -99,12 +99,6 @@ export const areaGuide: GuideItem[] = [
     icon: "shopping-bag",
   },
   {
-    name: "The Cheesemonger's Shop",
-    category: "shopping",
-    description: "Artisan cheeses, charcuterie, and local wines in the village.",
-    icon: "shopping-bag",
-  },
-  {
     name: "Kris Kringl",
     category: "shopping",
     description: "Year-round Christmas shop with ornaments, nutcrackers, and Bavarian gifts.",

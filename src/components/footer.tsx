@@ -57,12 +57,22 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="#"
+                  href="https://www.airbnb.com/rooms/1342896722129623173"
                   className="text-sm text-white/70 hover:text-white transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Airbnb
+                  Airbnb — The Studio
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.airbnb.com/rooms/1342862960175821028"
+                  className="text-sm text-white/70 hover:text-white transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Airbnb — The Suite
                 </a>
               </li>
             </ul>
