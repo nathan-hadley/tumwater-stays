@@ -8,12 +8,15 @@ import { usePricing } from "@/hooks/use-pricing";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Info } from "lucide-react";
 import {
   GuestCountPicker,
   type GuestCounts,
 } from "@/components/guest-count-picker";
 import { DateRangePicker } from "@/components/date-range-picker";
 import { PricingBreakdown } from "@/components/pricing-breakdown";
+
+const BOOKING_ENABLED = false;
 
 const DEFAULT_GUESTS: GuestCounts = { adults: 1, children: 0, infants: 0 };
 
@@ -109,6 +112,23 @@ export function Booking() {
         >
           Book Your Stay
         </h2>
+
+        {/* Coming-soon notice */}
+        {!BOOKING_ENABLED && (
+          <div className="flex items-start gap-3 rounded-xl border border-accent-warm/40 bg-accent-warm/5 px-4 py-3 mb-8 max-w-lg mx-auto">
+            <Info className="h-5 w-5 text-accent-warm shrink-0 mt-0.5" />
+            <p className="text-sm text-foreground/80">
+              Online booking is coming soon. In the meantime,{" "}
+              <a
+                href="#contact"
+                className="font-medium text-accent-warm underline underline-offset-2 hover:text-accent-warm-dark"
+              >
+                contact us directly
+              </a>{" "}
+              to check availability and reserve your dates.
+            </p>
+          </div>
+        )}
 
         {/* Unit Selector */}
         <div className="grid grid-cols-2 gap-3 mb-8 max-w-lg mx-auto">
@@ -226,13 +246,23 @@ export function Booking() {
                 </div>
               )}
 
-              <Button
-                type="submit"
-                disabled={!isFormValid || isSubmitting}
-                className="w-full bg-accent-warm text-white hover:bg-accent-warm-dark h-12 text-base font-semibold"
-              >
-                {isSubmitting ? "Processing\u2026" : "Pay & Book"}
-              </Button>
+              {BOOKING_ENABLED ? (
+                <Button
+                  type="submit"
+                  disabled={!isFormValid || isSubmitting}
+                  className="w-full bg-accent-warm text-white hover:bg-accent-warm-dark h-12 text-base font-semibold"
+                >
+                  {isSubmitting ? "Processing\u2026" : "Pay & Book"}
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  asChild
+                  className="w-full bg-accent-warm text-white hover:bg-accent-warm-dark h-12 text-base font-semibold"
+                >
+                  <a href="#contact">Contact Us to Book</a>
+                </Button>
+              )}
             </div>
           </div>
         </form>
