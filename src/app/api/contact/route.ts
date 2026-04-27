@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 
   try {
     await resend.emails.send({
-      from: "Tumwater Stays <onboarding@resend.dev>",
+      from: "Tumwater Stays <hello@tumwaterstays.com>",
       to: process.env.HOST_EMAIL || "placeholder@example.com",
       replyTo: email,
       subject: `New inquiry from ${name}`,
