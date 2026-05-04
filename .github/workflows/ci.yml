@@ -66,6 +66,13 @@ jobs:
         run: pnpm exec playwright install-deps chromium
 
       - run: pnpm test:e2e
+        env:
+          STRIPE_SECRET_KEY: sk_test_ci_dummy
+          RESEND_API_KEY: re_ci_dummy
+          PRICELABS_API_KEY: ci_dummy
+          STUDIO_ICAL_URL: https://example.invalid/studio.ics
+          ONEBR_ICAL_URL: https://example.invalid/onebr.ics
+          HOST_EMAIL: ci@example.invalid
 
       - name: Upload Playwright report
         if: failure()
