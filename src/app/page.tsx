@@ -1,13 +1,13 @@
-import { Nav } from "@/components/nav";
-import { Hero } from "@/components/sections/hero";
-import { Units } from "@/components/sections/units";
-import { Booking } from "@/components/sections/booking";
-import { AreaGuide } from "@/components/sections/area-guide";
-import { Reviews } from "@/components/sections/reviews";
-import { HouseRules } from "@/components/sections/house-rules";
-import { Contact } from "@/components/sections/contact";
 import { Footer } from "@/components/footer";
+import { Nav } from "@/components/nav";
 import { ScrollToTop } from "@/components/scroll-to-top";
+import { AreaGuide } from "@/components/sections/area-guide";
+import { Booking } from "@/components/sections/booking";
+import { Contact } from "@/components/sections/contact";
+import { Hero } from "@/components/sections/hero";
+import { HouseRules } from "@/components/sections/house-rules";
+import { Reviews } from "@/components/sections/reviews";
+import { Units } from "@/components/sections/units";
 
 export default function Home() {
   return (

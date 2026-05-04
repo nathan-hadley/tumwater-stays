@@ -1,9 +1,9 @@
-import { units } from "@/data/units";
-import { getUnitPhotos } from "@/data/photos";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { PhotoCarousel } from "@/components/photo-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { PhotoCarousel } from "@/components/photo-carousel";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { getUnitPhotos } from "@/data/photos";
+import { units } from "@/data/units";
 
 export function Units() {
   return (
@@ -38,8 +38,7 @@ export function Units() {
                 <h3
                   className="text-2xl font-normal text-foreground"
                   style={{
-                    fontFamily:
-                      "var(--font-heading), ui-serif, Georgia, serif",
+                    fontFamily: "var(--font-heading), ui-serif, Georgia, serif",
                   }}
                 >
                   {unit.name}
@@ -48,9 +47,7 @@ export function Units() {
               </CardHeader>
 
               <CardContent className="flex flex-col gap-4 flex-1 pb-6">
-                <p className="text-foreground leading-relaxed">
-                  {unit.description}
-                </p>
+                <p className="text-foreground leading-relaxed">{unit.description}</p>
 
                 {/* Amenities */}
                 <div className="flex flex-wrap gap-2">

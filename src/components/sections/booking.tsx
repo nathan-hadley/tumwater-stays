@@ -1,36 +1,36 @@
 "use client";
 
-import { useState } from "react";
 import { format } from "date-fns";
-import { units } from "@/data/units";
-import { cn } from "@/lib/utils";
-import { usePricing } from "@/hooks/use-pricing";
+import { Info } from "lucide-react";
+import { useState } from "react";
+
+import { DateRangePicker } from "@/components/date-range-picker";
+import { GuestCountPicker, type GuestCounts } from "@/components/guest-count-picker";
+import { PricingBreakdown } from "@/components/pricing-breakdown";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Info } from "lucide-react";
-import {
-  GuestCountPicker,
-  type GuestCounts,
-} from "@/components/guest-count-picker";
-import { DateRangePicker } from "@/components/date-range-picker";
-import { PricingBreakdown } from "@/components/pricing-breakdown";
+import { units } from "@/data/units";
+import { usePricing } from "@/hooks/use-pricing";
+import { cn } from "@/lib/utils";
 
 const BOOKING_ENABLED = false;
 
 const DEFAULT_GUESTS: GuestCounts = { adults: 1, children: 0, infants: 0 };
 
 export function Booking() {
-  const [selectedUnit, setSelectedUnit] = useState<"studio" | "onebr">(
-    "studio"
-  );
+  const [selectedUnit, setSelectedUnit] = useState<"studio" | "onebr">("studio");
   const [checkIn, setCheckIn] = useState<Date | null>(null);
   const [checkOut, setCheckOut] = useState<Date | null>(null);
   const [guests, setGuests] = useState<GuestCounts>(DEFAULT_GUESTS);
   const [guestName, setGuestName] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
 
-  const { rates, isLoading: isLoadingRates, error: ratesError } = usePricing(selectedUnit, checkIn, checkOut);
+  const {
+    rates,
+    isLoading: isLoadingRates,
+    error: ratesError,
+  } = usePricing(selectedUnit, checkIn, checkOut);
 
   // Submission state
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -136,9 +136,7 @@ export function Booking() {
             <button
               key={unit.id}
               type="button"
-              onClick={() =>
-                handleUnitChange(unit.id as "studio" | "onebr")
-              }
+              onClick={() => handleUnitChange(unit.id as "studio" | "onebr")}
               className={cn(
                 "rounded-xl border-2 p-4 text-left transition-all",
                 selectedUnit === unit.id
@@ -146,26 +144,24 @@ export function Booking() {
                   : "border-border hover:border-muted-foreground/30 bg-card"
               )}
             >
-              <div className="text-sm font-semibold text-foreground">
-                {unit.name}
-              </div>
-              <div className="text-xs text-muted-foreground mt-0.5">
-                {unit.tagline}
-              </div>
+              <div className="text-sm font-semibold text-foreground">{unit.name}</div>
+              <div className="text-xs text-muted-foreground mt-0.5">{unit.tagline}</div>
             </button>
           ))}
         </div>
 
         {/* Two-column layout */}
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={(e) => {
+            void handleSubmit(e);
+          }}
+        >
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             {/* Left column: Date picker + Guest count */}
             <div className="lg:col-span-3 space-y-8">
               {/* Date Picker */}
               <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-                <h3 className="text-sm font-semibold text-foreground mb-4">
-                  Select Dates
-                </h3>
+                <h3 className="text-sm font-semibold text-foreground mb-4">Select Dates</h3>
                 <DateRangePicker
                   unitId={selectedUnit}
                   checkIn={checkIn}
@@ -177,14 +173,8 @@ export function Booking() {
 
               {/* Guest Count */}
               <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-                <h3 className="text-sm font-semibold text-foreground mb-4">
-                  Guests
-                </h3>
-                <GuestCountPicker
-                  unitId={selectedUnit}
-                  value={guests}
-                  onChange={setGuests}
-                />
+                <h3 className="text-sm font-semibold text-foreground mb-4">Guests</h3>
+                <GuestCountPicker unitId={selectedUnit} value={guests} onChange={setGuests} />
               </div>
             </div>
 
@@ -192,9 +182,7 @@ export function Booking() {
             <div className="lg:col-span-2 space-y-6">
               {/* Pricing */}
               <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-                <h3 className="text-sm font-semibold text-foreground mb-4">
-                  Pricing
-                </h3>
+                <h3 className="text-sm font-semibold text-foreground mb-4">Pricing</h3>
                 {checkIn && checkOut ? (
                   <PricingBreakdown
                     rates={rates}
@@ -202,17 +190,13 @@ export function Booking() {
                     error={ratesError ? "Unable to load pricing" : null}
                   />
                 ) : (
-                  <p className="text-sm text-muted-foreground">
-                    Select dates to see pricing
-                  </p>
+                  <p className="text-sm text-muted-foreground">Select dates to see pricing</p>
                 )}
               </div>
 
               {/* Guest Info */}
               <div className="rounded-xl border border-border bg-card p-4 shadow-sm space-y-4">
-                <h3 className="text-sm font-semibold text-foreground">
-                  Your Information
-                </h3>
+                <h3 className="text-sm font-semibold text-foreground">Your Information</h3>
 
                 <div className="space-y-2">
                   <Label htmlFor="guest-name">Full Name</Label>

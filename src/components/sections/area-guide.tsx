@@ -1,14 +1,8 @@
 "use client";
 
+import { Utensils, Trees, Heart, ShoppingBag, Mountain, type LucideIcon } from "lucide-react";
 import { useState } from "react";
-import {
-  Utensils,
-  Trees,
-  Heart,
-  ShoppingBag,
-  Mountain,
-  type LucideIcon,
-} from "lucide-react";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { areaGuide, type GuideCategory } from "@/data/area-guide";
 
@@ -29,9 +23,7 @@ const categories: { label: string; value: GuideCategory | "all" }[] = [
 ];
 
 export function AreaGuide() {
-  const [activeCategory, setActiveCategory] = useState<
-    GuideCategory | "all"
-  >("all");
+  const [activeCategory, setActiveCategory] = useState<GuideCategory | "all">("all");
 
   const filtered =
     activeCategory === "all"
@@ -52,8 +44,8 @@ export function AreaGuide() {
             Explore Leavenworth
           </h2>
           <p className="mt-4 text-muted-foreground max-w-lg mx-auto">
-            Discover the best restaurants, trails, activities, and shops — all
-            within minutes of your stay.
+            Discover the best restaurants, trails, activities, and shops — all within minutes of
+            your stay.
           </p>
         </div>
 
@@ -81,13 +73,9 @@ export function AreaGuide() {
             return (
               <Card key={item.name} className="border-0 shadow-none bg-surface">
                 <CardContent className="flex flex-col gap-3">
-                  {Icon && (
-                    <Icon className="h-6 w-6 text-accent-warm" />
-                  )}
+                  {Icon && <Icon className="h-6 w-6 text-accent-warm" />}
                   <h3 className="font-bold">{item.name}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {item.description}
-                  </p>
+                  <p className="text-sm text-muted-foreground">{item.description}</p>
                 </CardContent>
               </Card>
             );

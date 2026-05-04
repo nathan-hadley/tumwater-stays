@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { parseIcal } from "@/lib/ical-parser";
 
 export async function GET(request: NextRequest) {
   const unit = request.nextUrl.searchParams.get("unit");
 
-  const icalUrl =
-    unit === "studio"
-      ? process.env.STUDIO_ICAL_URL
-      : process.env.ONEBR_ICAL_URL;
+  const icalUrl = unit === "studio" ? process.env.STUDIO_ICAL_URL : process.env.ONEBR_ICAL_URL;
 
   if (!icalUrl || icalUrl === "placeholder") {
     // Return empty availability when not configured

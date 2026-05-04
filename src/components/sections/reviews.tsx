@@ -1,6 +1,7 @@
 import { Star } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { reviews } from "@/data/reviews";
 
 function StarRating({ rating }: { rating: number }) {
@@ -10,9 +11,7 @@ function StarRating({ rating }: { rating: number }) {
         <Star
           key={i}
           className={`h-4 w-4 ${
-            i < rating
-              ? "fill-yellow-400 text-yellow-400"
-              : "fill-muted text-muted"
+            i < rating ? "fill-yellow-400 text-yellow-400" : "fill-muted text-muted"
           }`}
         />
       ))}
@@ -57,13 +56,9 @@ export function Reviews() {
                 <div className="flex items-center justify-between mt-auto">
                   <div>
                     <p className="text-sm font-semibold">{review.guest}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {formatDate(review.date)}
-                    </p>
+                    <p className="text-xs text-muted-foreground">{formatDate(review.date)}</p>
                   </div>
-                  <Badge
-                    variant={review.source === "airbnb" ? "secondary" : "outline"}
-                  >
+                  <Badge variant={review.source === "airbnb" ? "secondary" : "outline"}>
                     {review.source === "airbnb" ? "Airbnb" : "Direct Guest"}
                   </Badge>
                 </div>

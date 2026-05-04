@@ -1,9 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
-import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+
 import { cn } from "@/lib/utils";
 
 interface PhotoCarouselProps {
@@ -86,9 +87,7 @@ export function PhotoCarousel({ photos, alt }: PhotoCarouselProps) {
             aria-label={`Go to photo ${index + 1}`}
             className={cn(
               "h-2 w-2 rounded-full transition-all",
-              index === selectedIndex
-                ? "bg-white w-4"
-                : "bg-white/50 hover:bg-white/75"
+              index === selectedIndex ? "bg-white w-4" : "bg-white/50 hover:bg-white/75"
             )}
           />
         ))}
