@@ -2,6 +2,7 @@
 
 import { format } from "date-fns";
 import useSWR from "swr";
+
 import type { NightlyRate } from "@/components/pricing-breakdown";
 
 const fetcher = (url: string) =>
@@ -10,11 +11,7 @@ const fetcher = (url: string) =>
     return res.json();
   });
 
-export function usePricing(
-  unitId: string,
-  checkIn: Date | null,
-  checkOut: Date | null
-) {
+export function usePricing(unitId: string, checkIn: Date | null, checkOut: Date | null) {
   const key =
     checkIn && checkOut
       ? `/api/pricing?${new URLSearchParams({

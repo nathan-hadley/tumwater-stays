@@ -46,9 +46,7 @@ export function PricingBreakdown({ rates, isLoading, error }: Props) {
   if (error) {
     return (
       <div className="rounded-lg border border-border bg-surface p-4 text-center">
-        <p className="text-sm text-muted-foreground">
-          Contact us for pricing
-        </p>
+        <p className="text-sm text-muted-foreground">Contact us for pricing</p>
         <p className="mt-1 text-xs text-muted-foreground/70">
           We&apos;ll get back to you with an accurate quote.
         </p>
@@ -70,16 +68,9 @@ export function PricingBreakdown({ rates, isLoading, error }: Props) {
 
       <div className="space-y-1.5">
         {rates.map((r) => (
-          <div
-            key={r.date}
-            className="flex items-center justify-between text-sm"
-          >
-            <span className="text-muted-foreground">
-              {format(parseISO(r.date), "EEE, MMM d")}
-            </span>
-            <span className="tabular-nums text-foreground">
-              {formatCurrency(r.rate)}
-            </span>
+          <div key={r.date} className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">{format(parseISO(r.date), "EEE, MMM d")}</span>
+            <span className="tabular-nums text-foreground">{formatCurrency(r.rate)}</span>
           </div>
         ))}
       </div>

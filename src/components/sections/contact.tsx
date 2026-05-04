@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
 import { Phone, MapPin, Mail } from "lucide-react";
+import { useState, type FormEvent } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -82,21 +83,23 @@ export function Contact() {
         {/* Two-column layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Left column — Contact Form */}
-          <form onSubmit={handleSubmit} noValidate className="space-y-5">
+          <form
+            onSubmit={(e) => {
+              void handleSubmit(e);
+            }}
+            noValidate
+            className="space-y-5"
+          >
             <div className="space-y-2">
               <Label htmlFor="contact-name">Name</Label>
               <Input
                 id="contact-name"
                 required
                 value={formData.name}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, name: e.target.value }))
-                }
+                onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
                 placeholder="Your name"
               />
-              {errors.name && (
-                <p className="text-sm text-destructive">{errors.name}</p>
-              )}
+              {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
             </div>
 
             <div className="space-y-2">
@@ -106,14 +109,10 @@ export function Contact() {
                 type="email"
                 required
                 value={formData.email}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, email: e.target.value }))
-                }
+                onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
                 placeholder="you@example.com"
               />
-              {errors.email && (
-                <p className="text-sm text-destructive">{errors.email}</p>
-              )}
+              {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
             </div>
 
             <div className="space-y-2">
@@ -121,9 +120,7 @@ export function Contact() {
               <Input
                 id="contact-dates"
                 value={formData.dates}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, dates: e.target.value }))
-                }
+                onChange={(e) => setFormData((prev) => ({ ...prev, dates: e.target.value }))}
                 placeholder="e.g., Mar 15-18"
               />
             </div>
@@ -135,14 +132,10 @@ export function Contact() {
                 required
                 rows={4}
                 value={formData.message}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, message: e.target.value }))
-                }
+                onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
                 placeholder="How can we help?"
               />
-              {errors.message && (
-                <p className="text-sm text-destructive">{errors.message}</p>
-              )}
+              {errors.message && <p className="text-sm text-destructive">{errors.message}</p>}
             </div>
 
             <Button
@@ -159,9 +152,7 @@ export function Contact() {
               </p>
             )}
             {status === "error" && (
-              <p className="text-sm text-destructive font-medium">
-                {errorMessage}
-              </p>
+              <p className="text-sm text-destructive font-medium">{errorMessage}</p>
             )}
           </form>
 

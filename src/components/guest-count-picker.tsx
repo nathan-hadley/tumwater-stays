@@ -1,6 +1,7 @@
 "use client";
 
 import { Minus, Plus } from "lucide-react";
+
 import { units } from "@/data/units";
 import { cn } from "@/lib/utils";
 
@@ -32,9 +33,7 @@ export function GuestCountPicker({ unitId, value, onChange }: Props) {
 
   // For 1BR, adults + children <= 4
   const maxChildrenForUnit =
-    unitId === "onebr"
-      ? Math.min(childrenLimit.max, 4 - value.adults)
-      : childrenLimit.max;
+    unitId === "onebr" ? Math.min(childrenLimit.max, 4 - value.adults) : childrenLimit.max;
 
   const rows: RowConfig[] = [
     {
@@ -51,8 +50,7 @@ export function GuestCountPicker({ unitId, value, onChange }: Props) {
       min: childrenLimit.min,
       max: maxChildrenForUnit,
       hidden: unitId === "studio",
-      disabledNote:
-        unitId === "studio" ? "Not available for this unit" : undefined,
+      disabledNote: unitId === "studio" ? "Not available for this unit" : undefined,
     },
     {
       key: "infants",
@@ -87,17 +85,10 @@ export function GuestCountPicker({ unitId, value, onChange }: Props) {
           const atMax = current >= row.max;
 
           return (
-            <div
-              key={row.key}
-              className="flex items-center justify-between py-2"
-            >
+            <div key={row.key} className="flex items-center justify-between py-2">
               <div>
-                <div className="text-sm font-medium text-foreground">
-                  {row.label}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  {row.description}
-                </div>
+                <div className="text-sm font-medium text-foreground">{row.label}</div>
+                <div className="text-xs text-muted-foreground">{row.description}</div>
               </div>
 
               <div className="flex items-center gap-3">
@@ -116,9 +107,7 @@ export function GuestCountPicker({ unitId, value, onChange }: Props) {
                   <Minus className="h-3.5 w-3.5" />
                 </button>
 
-                <span className="w-6 text-center text-sm font-medium tabular-nums">
-                  {current}
-                </span>
+                <span className="w-6 text-center text-sm font-medium tabular-nums">{current}</span>
 
                 <button
                   type="button"

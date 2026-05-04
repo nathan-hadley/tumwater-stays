@@ -1,15 +1,12 @@
+import { CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { CheckCircle } from "lucide-react";
+
 import { stripe } from "@/lib/stripe";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export default async function BookingSuccessPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
+export default async function BookingSuccessPage({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams;
   const sessionId = typeof params.session_id === "string" ? params.session_id : null;
 
@@ -76,8 +73,8 @@ export default async function BookingSuccessPage({
               Thank You for Your Booking!
             </h1>
             <p className="text-muted-foreground mb-8">
-              Your payment was received. You will receive a confirmation email
-              with details and next steps shortly.
+              Your payment was received. You will receive a confirmation email with details and next
+              steps shortly.
             </p>
             <Link
               href="/"
@@ -145,17 +142,15 @@ export default async function BookingSuccessPage({
             {formattedAmount && (
               <div className="flex justify-between text-sm border-t border-border pt-3 mt-3">
                 <span className="text-muted-foreground">Amount Paid</span>
-                <span className="font-semibold text-foreground">
-                  {formattedAmount}
-                </span>
+                <span className="font-semibold text-foreground">{formattedAmount}</span>
               </div>
             )}
           </div>
 
           <p className="text-sm text-muted-foreground mb-8">
             You will receive a confirmation email at{" "}
-            <span className="font-medium text-foreground">{guestEmail}</span>{" "}
-            with check-in details and next steps.
+            <span className="font-medium text-foreground">{guestEmail}</span> with check-in details
+            and next steps.
           </p>
 
           <Link

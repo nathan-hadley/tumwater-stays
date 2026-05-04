@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   startOfMonth,
   endOfMonth,
@@ -15,8 +13,11 @@ import {
   startOfDay,
   getDay,
 } from "date-fns";
-import { cn } from "@/lib/utils";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
+
 import { useAvailability, type BookedRange } from "@/hooks/use-availability";
+import { cn } from "@/lib/utils";
 
 type Props = {
   unitId: "studio" | "onebr";
@@ -27,16 +28,10 @@ type Props = {
 };
 
 function isDateBooked(date: Date, bookedRanges: BookedRange[]): boolean {
-  return bookedRanges.some(
-    (range) => date >= range.start && date < range.end
-  );
+  return bookedRanges.some((range) => date >= range.start && date < range.end);
 }
 
-function hasBookedDateInRange(
-  start: Date,
-  end: Date,
-  bookedRanges: BookedRange[]
-): boolean {
+function hasBookedDateInRange(start: Date, end: Date, bookedRanges: BookedRange[]): boolean {
   const days = eachDayOfInterval({ start, end });
   // Check all days except the checkout day itself (checkout day can be a booked start)
   return days.slice(0, -1).some((day) => isDateBooked(day, bookedRanges));
@@ -81,7 +76,6 @@ export function DateRangePicker({
   const prevMonth = () => setBaseMonth((m) => subMonths(m, 1));
   const nextMonth = () => setBaseMonth((m) => addMonths(m, 1));
 
-
   return (
     <div>
       {/* Selection state label */}
@@ -89,7 +83,7 @@ export function DateRangePicker({
         <div
           className={cn(
             "flex-1 rounded-lg border px-3 py-2 text-center text-sm transition-colors",
-            (!checkIn || (!selectingCheckOut && !checkOut))
+            !checkIn || (!selectingCheckOut && !checkOut)
               ? "border-accent-warm bg-accent-warm/5 font-medium text-foreground"
               : "border-border text-muted-foreground"
           )}
@@ -125,8 +119,7 @@ export function DateRangePicker({
         <div className="text-sm font-semibold text-foreground tracking-wide">
           <span className="md:hidden">{format(baseMonth, "MMMM yyyy")}</span>
           <span className="hidden md:inline">
-            {format(baseMonth, "MMMM yyyy")} &mdash;{" "}
-            {format(addMonths(baseMonth, 1), "MMMM yyyy")}
+            {format(baseMonth, "MMMM yyyy")} &mdash; {format(addMonths(baseMonth, 1), "MMMM yyyy")}
           </span>
         </div>
 
@@ -208,10 +201,7 @@ function MonthGrid({
       {/* Day headers */}
       <div className="grid grid-cols-7 mb-1">
         {DAY_LABELS.map((label, i) => (
-          <div
-            key={i}
-            className="text-center text-xs font-medium text-muted-foreground py-1"
-          >
+          <div key={i} className="text-center text-xs font-medium text-muted-foreground py-1">
             {label}
           </div>
         ))}
@@ -224,10 +214,7 @@ function MonthGrid({
             <div key={`e-${i}`} className="aspect-square" />
           ))}
           {Array.from({ length: daysInMonth.length }).map((_, i) => (
-            <div
-              key={`s-${i}`}
-              className="aspect-square flex items-center justify-center m-0.5"
-            >
+            <div key={`s-${i}`} className="aspect-square flex items-center justify-center m-0.5">
               <div className="w-6 h-6 rounded-md bg-muted animate-pulse" />
             </div>
           ))}
@@ -246,10 +233,7 @@ function MonthGrid({
             const isCheckIn = checkIn && isSameDay(day, checkIn);
             const isCheckOut = checkOut && isSameDay(day, checkOut);
             const isInRange =
-              checkIn &&
-              checkOut &&
-              isAfter(day, checkIn) &&
-              isBefore(day, checkOut);
+              checkIn && checkOut && isAfter(day, checkIn) && isBefore(day, checkOut);
 
             return (
               <button
@@ -272,11 +256,9 @@ function MonthGrid({
                     !isPast &&
                     "bg-muted text-muted-foreground cursor-not-allowed line-through",
                   // Check-in date
-                  isCheckIn &&
-                    "bg-accent-warm text-white font-semibold rounded-l-full",
+                  isCheckIn && "bg-accent-warm text-white font-semibold rounded-l-full",
                   // Check-out date
-                  isCheckOut &&
-                    "bg-accent-warm text-white font-semibold rounded-r-full",
+                  isCheckOut && "bg-accent-warm text-white font-semibold rounded-r-full",
                   // Dates in range
                   isInRange && "bg-accent-warm/20"
                 )}

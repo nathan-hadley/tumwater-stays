@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
 import { headingFont, bodyFont } from "@/lib/fonts";
+
+import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,8 +17,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Tumwater Stays | Direct Booking in Leavenworth, WA",
-    description:
-      "Two cozy mountain retreats in Leavenworth, WA. Book direct and save.",
+    description: "Two cozy mountain retreats in Leavenworth, WA. Book direct and save.",
     type: "website",
     locale: "en_US",
     siteName: "Tumwater Stays",
@@ -25,8 +25,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Tumwater Stays | Direct Booking in Leavenworth, WA",
-    description:
-      "Two cozy mountain retreats in Leavenworth, WA. Book direct and save.",
+    description: "Two cozy mountain retreats in Leavenworth, WA. Book direct and save.",
   },
 };
 

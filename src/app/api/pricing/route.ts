@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { fetchNightlyRates } from "@/lib/pricelabs";
 
 export async function GET(request: NextRequest) {

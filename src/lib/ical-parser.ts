@@ -20,7 +20,5 @@ export function parseIcal(icalString: string): BookedRange[] {
 }
 
 export function isDateBooked(date: Date, bookedRanges: BookedRange[]): boolean {
-  return bookedRanges.some(
-    (range) => date >= range.start && date < range.end
-  );
+  return bookedRanges.some((range) => date >= range.start && date < range.end);
 }

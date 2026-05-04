@@ -17,25 +17,29 @@ export const areaGuide: GuideItem[] = [
   {
     name: "Yodelin Broth Company and Beer Garden",
     category: "dining",
-    description: "Their sweet potato bahn-mi is delish! Opt to sit outside and enjoy the view of the river and beautiful cottonwood trees.",
+    description:
+      "Their sweet potato bahn-mi is delish! Opt to sit outside and enjoy the view of the river and beautiful cottonwood trees.",
     icon: "utensils",
   },
   {
     name: "Larch Handcrafted Pasta & Cocktails",
     category: "dining",
-    description: "A wonderful place for a fancier meal and drink — if you're celebrating something, do it at Larch! And get the tiramisu.",
+    description:
+      "A wonderful place for a fancier meal and drink — if you're celebrating something, do it at Larch! And get the tiramisu.",
     icon: "utensils",
   },
   {
     name: "München Haus",
     category: "dining",
-    description: "A fun biergarten with more mustard options than you knew you wanted. Plus bottomless sauerkraut — who doesn't love that?",
+    description:
+      "A fun biergarten with more mustard options than you knew you wanted. Plus bottomless sauerkraut — who doesn't love that?",
     icon: "utensils",
   },
   {
     name: "Argonaut Coffee and Biscuits",
     category: "dining",
-    description: "Some of the tastiest breakfast sandwiches out there! Amazing coffee too. Prepare for long waits on weekends — but it's worth it.",
+    description:
+      "Some of the tastiest breakfast sandwiches out there! Amazing coffee too. Prepare for long waits on weekends — but it's worth it.",
     icon: "utensils",
   },
   {
@@ -53,7 +57,8 @@ export const areaGuide: GuideItem[] = [
   {
     name: "Lupine Market & Café",
     category: "dining",
-    description: "Café and market on Icicle Road from the Argonaut folks. Great coffee and baked goods. Open Tues–Sat, 8am–4pm.",
+    description:
+      "Café and market on Icicle Road from the Argonaut folks. Great coffee and baked goods. Open Tues–Sat, 8am–4pm.",
     icon: "utensils",
   },
   {
@@ -65,13 +70,15 @@ export const areaGuide: GuideItem[] = [
   {
     name: "Colchuck Lake / The Enchantments",
     category: "outdoors",
-    description: "World-class alpine hiking with pristine glacial lakes. Permits required in peak season.",
+    description:
+      "World-class alpine hiking with pristine glacial lakes. Permits required in peak season.",
     icon: "mountain",
   },
   {
     name: "Tumwater Canyon",
     category: "outdoors",
-    description: "Scenic drive and riverside trails just minutes from the property. Great for fall foliage.",
+    description:
+      "Scenic drive and riverside trails just minutes from the property. Great for fall foliage.",
     icon: "trees",
   },
   {
@@ -95,7 +102,8 @@ export const areaGuide: GuideItem[] = [
   {
     name: "Front Street Village",
     category: "shopping",
-    description: "Stroll the charming Bavarian village with shops, galleries, and seasonal festivals. A 20-minute walk from our place.",
+    description:
+      "Stroll the charming Bavarian village with shops, galleries, and seasonal festivals. A 20-minute walk from our place.",
     icon: "shopping-bag",
   },
   {

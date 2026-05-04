@@ -1,8 +1,9 @@
 "use client";
 
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { Menu, X } from "lucide-react";
+
 import { navItems } from "@/data/navigation";
 
 export function MobileNav() {
@@ -10,6 +11,7 @@ export function MobileNav() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- SSR-safe mount flag for createPortal
     setMounted(true);
   }, []);
 
@@ -22,9 +24,7 @@ export function MobileNav() {
   const overlay = (
     <div
       className={`fixed inset-0 z-40 flex flex-col items-center justify-center bg-primary transition-all duration-300 ease-in-out md:hidden ${
-        isOpen
-          ? "opacity-100 visible"
-          : "opacity-0 invisible pointer-events-none"
+        isOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
       }`}
     >
       <nav className="flex flex-col items-center gap-8">

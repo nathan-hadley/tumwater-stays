@@ -2,7 +2,15 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+First, copy the example env file and fill in the required values:
+
+```bash
+cp .env.example .env.local
+```
+
+See [`.env.example`](./.env.example) for the full list of required and optional variables. Server-side variables are validated at build/start time via `src/lib/env.ts`; missing required vars will fail the build with a clear error.
+
+Then run the development server:
 
 ```bash
 pnpm dev

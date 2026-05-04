@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import { navItems } from "@/data/navigation";
+
 import { MobileNav } from "@/components/mobile-nav";
+import { navItems } from "@/data/navigation";
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -25,20 +27,18 @@ export function Nav() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
-        scrolled
-          ? "bg-primary shadow-lg"
-          : "bg-primary/80 backdrop-blur-md"
+        scrolled ? "bg-primary shadow-lg" : "bg-primary/80 backdrop-blur-md"
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         {/* Logo */}
-        <a
-          href="#"
+        <Link
+          href="/"
           className="text-xl font-bold tracking-tight text-white"
           style={{ fontFamily: "var(--font-heading), ui-serif, Georgia, serif" }}
         >
           Tumwater Stays
-        </a>
+        </Link>
 
         {/* Desktop nav links */}
         <div className="hidden items-center gap-6 md:flex">

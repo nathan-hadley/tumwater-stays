@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+
 import { units } from "@/data/units";
 import { fetchNightlyRates } from "@/lib/pricelabs";
+import { stripe } from "@/lib/stripe";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();

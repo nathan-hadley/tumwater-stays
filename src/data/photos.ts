@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+
 import type { Unit } from "./units";
 
 const IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
