@@ -13,10 +13,18 @@ export async function POST(request: NextRequest) {
   const unitName = unitData?.name ?? unit;
 
   // Calculate total from rates (server-side to prevent client tampering)
+  const LISTING_ENV_KEYS: Record<string, string> = {
+    studio: "STUDIO_PRICELABS_LISTING_ID",
+    onebr: "ONEBR_PRICELABS_LISTING_ID",
+  };
+  const listingId = process.env[LISTING_ENV_KEYS[unit] ?? ""];
+  const pms = process.env.PRICELABS_PMS;
+
   let totalCents: number;
   try {
-    const rates = await fetchNightlyRates(unit, checkIn, checkOut);
-    totalCents = rates.reduce((sum, r) => sum + r.rate, 0);
+    if (!listingId || !pms) throw new Error("Pricing not configured");
+    const rates = await fetchNightlyRates(listingId, pms, checkIn, checkOut);
+    totalCents = Math.round(rates.reduce((sum, r) => sum + r.rate, 0) * 100);
   } catch {
     return NextResponse.json(
       { error: "Unable to verify pricing. Please try again." },
