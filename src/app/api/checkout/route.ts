@@ -8,15 +8,16 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const { unit, checkIn, checkOut, guests, guestName, guestEmail } = body;
 
-  // Resolve unit name from unit ID
+  // Resolve unit data from unit ID
   const unitData = units.find((u) => u.id === unit);
   const unitName = unitData?.name ?? unit;
 
-  // Calculate total from rates (server-side to prevent client tampering)
+  // Calculate total from rates server-side to prevent client tampering
   let totalCents: number;
   try {
-    const rates = await fetchNightlyRates(unit, checkIn, checkOut);
-    totalCents = rates.reduce((sum, r) => sum + r.rate, 0);
+    if (!unitData) throw new Error("Unknown unit");
+    const rates = await fetchNightlyRates(unitData.pricelabsListingId, "airbnb", checkIn, checkOut);
+    totalCents = Math.round(rates.reduce((sum, r) => sum + r.rate, 0) * 100);
   } catch {
     return NextResponse.json(
       { error: "Unable to verify pricing. Please try again." },
