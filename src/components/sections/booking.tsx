@@ -125,7 +125,7 @@ export function Booking() {
               >
                 contact us directly
               </a>{" "}
-              to check availability and reserve your dates.
+              to reserve your dates.
             </p>
           </div>
         )}

@@ -43,7 +43,7 @@ export function Hero() {
 
           {/* Tagline */}
           <p className="max-w-lg text-base leading-relaxed text-white/80 md:text-lg">
-            Two cozy mountain retreats. Book direct and save.
+            Two cozy mountain retreats.
           </p>
 
           {/* CTA Button */}
