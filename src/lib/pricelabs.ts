@@ -3,6 +3,12 @@ export type NightlyRate = {
   rate: number; // in dollars
 };
 
+function lastNight(checkOut: string): string {
+  const d = new Date(checkOut);
+  d.setUTCDate(d.getUTCDate() - 1);
+  return d.toISOString().slice(0, 10);
+}
+
 export async function fetchNightlyRates(
   listingId: string,
   pms: string,
@@ -21,7 +27,8 @@ export async function fetchNightlyRates(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      listings: [{ id: listingId, pms, dateFrom: checkIn, dateTo: checkOut }],
+      // dateTo is inclusive in PriceLabs, so pass the last night (day before checkout)
+      listings: [{ id: listingId, pms, dateFrom: checkIn, dateTo: lastNight(checkOut) }],
     }),
     next: { revalidate: 43200 },
   });
