@@ -23,8 +23,8 @@ export function Footer() {
               Tumwater Stays
             </h3>
             <p className="mt-2 text-sm text-white/70 leading-relaxed">
-              Your peaceful retreat in Washington&apos;s Bavarian village. Comfortable,
-              thoughtfully equipped vacation rentals steps from downtown Leavenworth.
+              Your peaceful retreat in Washington&apos;s Bavarian village. Comfortable, thoughtfully
+              equipped vacation rentals steps from downtown Leavenworth.
             </p>
             <p className="mt-3 text-sm text-white/60">Leavenworth, Washington</p>
           </div>
