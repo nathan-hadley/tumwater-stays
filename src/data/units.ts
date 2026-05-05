@@ -10,6 +10,7 @@ export type Unit = {
     infants: { min: number; max: number };
   };
   icalEnvKey: string;
+  pricelabsListingId: string;
 };
 
 export const units: Unit[] = [
@@ -35,6 +36,7 @@ export const units: Unit[] = [
       infants: { min: 0, max: 1 },
     },
     icalEnvKey: "STUDIO_ICAL_URL",
+    pricelabsListingId: "1342896722129623173",
   },
   {
     id: "onebr",
@@ -59,5 +61,6 @@ export const units: Unit[] = [
       infants: { min: 0, max: 1 },
     },
     icalEnvKey: "ONEBR_ICAL_URL",
+    pricelabsListingId: "1342862960175821028",
   },
 ];
