@@ -14,7 +14,7 @@ import { units } from "@/data/units";
 import { usePricing } from "@/hooks/use-pricing";
 import { cn } from "@/lib/utils";
 
-const BOOKING_ENABLED = false;
+const BOOKING_ENABLED = true;
 
 const DEFAULT_GUESTS: GuestCounts = { adults: 1, children: 0, infants: 0 };
 
