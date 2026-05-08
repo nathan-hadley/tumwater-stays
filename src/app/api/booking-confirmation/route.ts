@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
   try {
     // Email to guest
     await resend.emails.send({
-      from: "Tumwater Stays <noreply@tumwaterstays.com>",
+      from: "Tumwater Stays <hello@tumwaterstays.com>",
       to: guestEmail,
       subject: "Your Booking is Confirmed — Tumwater Stays",
       html: `
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     // Email to host
     await resend.emails.send({
-      from: "Tumwater Stays <noreply@tumwaterstays.com>",
+      from: "Tumwater Stays <hello@tumwaterstays.com>",
       to: process.env.HOST_EMAIL || "placeholder@example.com",
       subject: `New Direct Booking: ${unitName} — ${checkIn} to ${checkOut}`,
       html: `
