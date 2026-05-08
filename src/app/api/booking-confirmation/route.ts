@@ -48,7 +48,11 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json({ success: true });
-  } catch {
-    return NextResponse.json({ error: "Failed to send confirmation" }, { status: 500 });
+  } catch (err) {
+    console.error("booking-confirmation error:", err);
+    return NextResponse.json(
+      { error: "Failed to send confirmation", detail: String(err) },
+      { status: 500 }
+    );
   }
 }
