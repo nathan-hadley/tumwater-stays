@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
 
 import { stripe } from "@/lib/stripe";
 
 import type Stripe from "stripe";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -25,33 +28,51 @@ export async function POST(request: NextRequest) {
 
     if (session.payment_status === "paid") {
       const { unitName, checkIn, checkOut, guestName, guestEmail, guests } = session.metadata ?? {};
-
-      const origin =
-        process.env.NEXT_PUBLIC_SITE_URL ||
-        (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+      const totalPaid = session.amount_total;
 
       try {
-        const res = await fetch(`${origin}/api/booking-confirmation`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            unitName,
-            checkIn,
-            checkOut,
-            guestName,
-            guestEmail,
-            totalPaid: session.amount_total,
-            guests,
-          }),
+        await resend.emails.send({
+          from: "Tumwater Stays <hello@tumwaterstays.com>",
+          to: guestEmail!,
+          subject: "Your Booking is Confirmed — Tumwater Stays",
+          html: `
+            <h1>Booking Confirmed!</h1>
+            <p>Hi ${guestName},</p>
+            <p>Your stay at <strong>${unitName}</strong> is confirmed.</p>
+            <ul>
+              <li><strong>Check-in:</strong> ${checkIn}</li>
+              <li><strong>Check-out:</strong> ${checkOut}</li>
+              <li><strong>Total Paid:</strong> $${((totalPaid ?? 0) / 100).toFixed(2)}</li>
+            </ul>
+            <p>We'll send you check-in details closer to your arrival date.</p>
+            <p>Thank you for booking direct!</p>
+            <p>— Tumwater Stays, Leavenworth WA</p>
+          `,
         });
 
-        if (!res.ok) {
-          console.error("booking-confirmation failed:", await res.text());
-          return NextResponse.json({ error: "Confirmation email failed" }, { status: 500 });
-        }
+        await resend.emails.send({
+          from: "Tumwater Stays <hello@tumwaterstays.com>",
+          to: process.env.HOST_EMAIL || "placeholder@example.com",
+          subject: `New Direct Booking: ${unitName} — ${checkIn} to ${checkOut}`,
+          html: `
+            <h1>New Direct Booking!</h1>
+            <ul>
+              <li><strong>Unit:</strong> ${unitName}</li>
+              <li><strong>Check-in:</strong> ${checkIn}</li>
+              <li><strong>Check-out:</strong> ${checkOut}</li>
+              <li><strong>Guest:</strong> ${guestName} (${guestEmail})</li>
+              <li><strong>Guests:</strong> ${guests}</li>
+              <li><strong>Total Paid:</strong> $${((totalPaid ?? 0) / 100).toFixed(2)}</li>
+            </ul>
+            <p><strong>ACTION REQUIRED:</strong> Block these dates on Airbnb.</p>
+          `,
+        });
       } catch (err) {
-        console.error("booking-confirmation fetch error:", err);
-        return NextResponse.json({ error: "Confirmation email failed" }, { status: 500 });
+        console.error("Resend error:", err);
+        return NextResponse.json(
+          { error: "Confirmation email failed", detail: String(err) },
+          { status: 500 }
+        );
       }
     }
   }
