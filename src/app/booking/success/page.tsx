@@ -29,31 +29,7 @@ export default async function BookingSuccessPage({ searchParams }: { searchParam
   const checkOut = metadata?.checkOut;
   const guestName = metadata?.guestName;
   const guestEmail = metadata?.guestEmail;
-  const guests = metadata?.guests;
   const amountTotal = session?.amount_total;
-
-  // Trigger confirmation email (fire-and-forget, don't block the page)
-  if (session && !fetchError && guestEmail) {
-    const origin =
-      process.env.NEXT_PUBLIC_SITE_URL ||
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
-
-    fetch(`${origin}/api/booking-confirmation`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        unitName,
-        checkIn,
-        checkOut,
-        guestName,
-        guestEmail,
-        totalPaid: amountTotal,
-        guests,
-      }),
-    }).catch(() => {
-      // Silently fail — confirmation email is best-effort
-    });
-  }
 
   // Fallback: generic thank-you when Stripe retrieval fails
   if (fetchError || !session) {
