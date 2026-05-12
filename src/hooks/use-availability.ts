@@ -9,7 +9,10 @@ export type BookedRange = {
 
 const fetcher = (url: string) =>
   fetch(url)
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to fetch availability");
+      return res.json();
+    })
     .then((data): BookedRange[] =>
       data.bookedRanges.map((r: { start: string; end: string }) => ({
         start: new Date(r.start),
@@ -17,12 +20,15 @@ const fetcher = (url: string) =>
       }))
     );
 
-export function useAvailability(unitId: string) {
-  const { data, isLoading } = useSWR(
-    `/api/availability?unit=${unitId}`,
-    fetcher,
-    { refreshInterval: 5 * 60 * 1000 } // refresh every 5 minutes
-  );
+export function useAvailability(unitId: string | null) {
+  const key = unitId ? `/api/availability?unit=${unitId}` : null;
+  const { data, isLoading, error } = useSWR(key, fetcher, {
+    refreshInterval: 5 * 60 * 1000, // refresh every 5 minutes
+  });
 
-  return { bookedRanges: data ?? [], loading: isLoading };
+  return {
+    bookedRanges: data ?? [],
+    loading: isLoading,
+    error: error ? "Unable to load availability" : null,
+  };
 }
