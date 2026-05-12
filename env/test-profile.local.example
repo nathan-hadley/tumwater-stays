@@ -14,4 +14,8 @@ ONEBR_ICAL_URL=https://example.invalid/one-bedroom.ics
 # Stripe webhook secret must match your local stripe listen forwarder session.
 STRIPE_WEBHOOK_SECRET=whsec_test_replace_me
 
+# Override the site URL so Stripe Checkout success/cancel redirects come back to local dev.
+# Without this, the canonical NEXT_PUBLIC_SITE_URL (production) would be used.
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
 # If your secrets manager uses *_TEST_* names, copy those values into the canonical keys above.
