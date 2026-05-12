@@ -22,7 +22,7 @@ Run `scripts/checkout-smoke.sh up`. The script is idempotent: it scaffolds `.env
 
 **Human-in-the-loop:** the repo's `.env` is a 1Password named pipe. The user must approve the 1Password prompt (biometric / desktop notification) the moment the script sources `.env`. If the script exits with `Missing STRIPE_TEST_SECRET_KEY …`, tell the user to approve in 1Password and then re-run — do not retry without involving them.
 
-On success it prints `checkout smoke env ready` and the log file paths. If it fails for any other reason, surface the error and stop — do not try to claim success.
+On success it prints `checkout smoke env ready` followed by the dev URL, stripe forward URL, log paths, and the `whsec_…` value. **Capture those log paths** — you'll need them in step 4. If it fails for any other reason, surface the error and stop — do not try to claim success.
 
 ## 2. Create a Checkout session
 
@@ -47,7 +47,7 @@ Use dates ~60 days out so PriceLabs returns rates. Extract the `url` from the re
 
 Use the Playwright MCP browser tools to:
 
-1. Navigate to the returned Stripe Checkout URL.
+1. Navigate to the returned Stripe Checkout URL. If this is the second run in the same session, close the existing browser context first (`browser_close`, then `browser_navigate`) so Stripe's localStorage doesn't replay the previous AI-disclosure state.
 2. Check the "I am an AI agent acting on behalf of someone else" disclosure (use `browser_evaluate` to scroll-and-click if the checkbox is out of viewport).
 3. Fill the form: card `4242 4242 4242 4242`, expiry `12 / 34`, CVC `123`, cardholder `Smoke Tester`, country `United States`, ZIP `98826`.
 4. Click "Pay".
@@ -57,10 +57,10 @@ If the page does not redirect to `/booking/success` within ~15s, screenshot/snap
 
 ## 4. Verify webhook + emails
 
-Read `/tmp/tumwater-stripe-listen.log` and `/tmp/tumwater-dev.log`:
+Read the log paths printed by `scripts/checkout-smoke.sh up` in step 1 (they live under `$TMPDIR/tumwater-checkout-smoke-<uid>/`):
 
 - The stripe-listen log MUST contain `checkout.session.completed` with a matching `[200] POST http://localhost:3000/api/webhooks/stripe`.
-- The dev log MUST NOT contain `Resend error:` lines for the test run. If the webhook returns 500 or Resend errors appear, mark the run as FAILED and surface the relevant log lines.
+- The dev log MUST NOT contain `Resend error:` lines for the test run (this is the exact prefix used by `src/app/api/webhooks/stripe/route.ts` when `resend.emails.send` throws). If the webhook returns 500 or that prefix appears, mark the run as FAILED and surface the relevant log lines.
 
 Both guest and host emails go to the addresses configured in `.env.test-profile.local` — note in your report that delivery should be visually confirmed by the user in their inbox; the local logs only prove Resend accepted the API call.
 

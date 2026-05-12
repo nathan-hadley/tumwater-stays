@@ -55,12 +55,14 @@ Note: the script intentionally does **not** source `.env`. Next.js itself still 
 
 ## 3) Start Stripe webhook forwarding (separate shell)
 
-Pass the test secret key directly so you don't need an interactive `stripe login`:
+Pass the test secret key via the `STRIPE_API_KEY` env var so it never appears on argv (and so you don't need an interactive `stripe login`):
 
 ```bash
-stripe listen \
-  --api-key "$(grep '^STRIPE_TEST_SECRET_KEY=' .env | cut -d= -f2-)" \
-  --forward-to http://localhost:3000/api/webhooks/stripe
+# Source the 1Password .env in a subshell to grab the test key.
+# (Don't `grep` the .env file directly — it's a FIFO; a partial read drains it and
+# you'll re-trigger the 1Password approval prompt for the next reader.)
+STRIPE_API_KEY="$(set -a; . ./.env; set +a; printf '%s' "$STRIPE_TEST_SECRET_KEY")" \
+  stripe listen --forward-to http://localhost:3000/api/webhooks/stripe
 ```
 
 Copy the printed `whsec_...` value into `.env.test-profile.local` as `STRIPE_WEBHOOK_SECRET`, then restart the dev server from step 2 so it picks up the new secret.
