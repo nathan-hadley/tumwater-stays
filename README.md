@@ -22,18 +22,26 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 End-to-end booking flow (PriceLabs → Stripe Checkout → webhook → Resend emails) against sandbox credentials. Separate from CI/unit tests.
 
-> ⚠️ A bare `pnpm dev` uses the **production** keys in the root `.env` and will charge real cards. Use `scripts/checkout-smoke.sh`.
+The repo's `.env` is the 1Password **`tumwater-stays-test`** environment — sandbox keys under the canonical names — so `pnpm dev` is safe by default. Production keys live in Vercel, not locally.
 
-Run from your own terminal — 1Password only serves the `.env` pipe to your interactive shell, not sandboxed/agent shells:
+One-time setup:
 
 ```bash
-brew install stripe/stripe-cli/stripe   # one-time
+brew install stripe/stripe-cli/stripe
+stripe login
+```
+
+Run the smoke test from your own terminal (1Password only serves the `.env` pipe to your interactive shell, not agent/sandboxed shells):
+
+```bash
 scripts/checkout-smoke.sh up            # approve the 1Password prompt when it appears
 # drive a booking through the UI; pay with Stripe test card 4242 4242 4242 4242
 scripts/checkout-smoke.sh down
 ```
 
-`up` writes `.env.test-profile.local` from the `*_TEST_*` values, starts `stripe listen`, and boots the dev server with the test overlay. Verify in the log paths it prints: `checkout.session.completed [200]` in the stripe log, no `Resend error:` in the dev log.
+`up` starts `stripe listen`, writes the rotating webhook secret to `.env.local`, and boots `pnpm dev`. Verify in the log paths it prints: `checkout.session.completed [200]` in the stripe log, no `Resend error:` in the dev log.
+
+> ⚠️ The `tumwater-stays-test` 1Password environment must contain only `sk_test_` / `pk_test_` keys. If the production environment ever gets linked to `.env`, `pnpm dev` will use live keys and charge real cards.
 
 ### Contact smoke (Resend direct)
 
