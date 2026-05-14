@@ -30,25 +30,22 @@ Full walkthrough: **[`docs/local-test-profile.md`](./docs/local-test-profile.md)
 
 ### TL;DR
 
+Run everything from **your own terminal** (1Password won't serve the `.env` pipe to sandboxed/agent shells):
+
 ```bash
 # 1. One-time
 brew install stripe/stripe-cli/stripe
-cp env/test-profile.local.example .env.test-profile.local
-# Fill .env.test-profile.local with *_TEST_* values from your 1Password .env,
-# and set NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
-# 2. Start dev with test profile overlay
-./scripts/dev-test-profile.sh
+# 2. Bring the whole test environment up (sources .env once — approve the 1Password prompt)
+scripts/checkout-smoke.sh up
 
-# 3. In another shell — forward webhooks (no `stripe login` needed)
-stripe listen \
-  --api-key "$(grep '^STRIPE_TEST_SECRET_KEY=' .env | cut -d= -f2-)" \
-  --forward-to http://localhost:3000/api/webhooks/stripe
-# Copy the printed whsec_... into .env.test-profile.local as STRIPE_WEBHOOK_SECRET
-# Restart ./scripts/dev-test-profile.sh so the new secret loads
+# 3. Drive checkout (UI or API), pay with card 4242 4242 4242 4242
 
-# 4. Drive checkout (UI or API), pay with card 4242 4242 4242 4242
+# 4. Tear it down
+scripts/checkout-smoke.sh down
 ```
+
+For the manual step-by-step (and what the script does under the hood), see [`docs/local-test-profile.md`](./docs/local-test-profile.md).
 
 Verify: `checkout.session.completed [200]` in the `stripe listen` log, no `Resend error:` lines in the dev log, guest + `HOST_EMAIL` inboxes both receive a message, and the browser lands on `/booking/success`.
 

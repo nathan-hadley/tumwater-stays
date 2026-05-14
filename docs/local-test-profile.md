@@ -18,7 +18,21 @@ brew install stripe/stripe-cli/stripe
 
 You don't need to run `stripe login` if you pass `--api-key` (see step 3).
 
-> **Heads up about 1Password.** The repo's `.env` is a 1Password-managed named pipe. Each time a process opens `.env`, 1Password will prompt you (notification + biometric/touch) to authorise serving the secrets. The human approval step is unavoidable — `scripts/checkout-smoke.sh up` will fail with a "Missing …" error if you don't approve before sourcing. Approve, then re-run.
+> **Heads up about 1Password.** The repo's `.env` is a 1Password-managed named pipe. Each time a process opens `.env`, 1Password prompts you (notification + biometric/touch) to authorise serving the secrets, and the pipe drains on that single read. 1Password only serves the pipe to processes it trusts — your own interactive shell works; sandboxed/agent shells get a silent empty read. So this whole workflow has to be run **manually from your own terminal**, not driven by an agent.
+
+## Fast path: `scripts/checkout-smoke.sh`
+
+If you just want the environment up, run this from your own terminal:
+
+```bash
+scripts/checkout-smoke.sh up       # scaffold .env.test-profile.local, start stripe listen + dev server
+scripts/checkout-smoke.sh status   # show what's running
+scripts/checkout-smoke.sh down     # tear it all down
+```
+
+`up` sources the 1Password `.env` once (approve the prompt when it appears), derives the `*_TEST_*` values, writes `.env.test-profile.local`, starts `stripe listen`, captures the `whsec_…`, and boots the dev server with the test overlay. If it exits with `Missing STRIPE_TEST_SECRET_KEY …`, you didn't approve the 1Password prompt in time — approve and re-run.
+
+The manual steps below do the same thing by hand; use them if you want to understand or customise the flow.
 
 ## 1) Create the local test-profile file
 
