@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # Local Stripe checkout smoke test.
 #
-# The repo's .env is the 1Password "tumwater-stays-test" environment — sandbox
+# The repo's .env is the 1Password "tumwater-stays-dev" environment — sandbox
 # keys under the canonical names — so `pnpm dev` is safe by default. This script
 # only wires up webhook forwarding: it starts `stripe listen`, captures the
 # webhook secret (which rotates every session) into .env.local, and runs the
