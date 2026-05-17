@@ -20,46 +20,28 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Real-API Smoke Test (Sandbox Only)
 
-Use sandbox/test credentials only. This is separate from CI/unit tests and validates end-to-end integrations with PriceLabs, Stripe, and Resend in non-production mode.
+End-to-end booking flow (PriceLabs → Stripe Checkout → webhook → Resend emails) against sandbox credentials. Separate from CI/unit tests.
 
-### Required local env vars
+The repo's `.env` is the 1Password **`tumwater-stays-dev`** environment — sandbox keys under the canonical names — so `pnpm dev` is safe by default. Production keys live in Vercel.
 
-- `STRIPE_SECRET_KEY`
-- `STRIPE_WEBHOOK_SECRET`
-- `RESEND_API_KEY`
-- `HOST_EMAIL`
-- `PRICELABS_API_KEY`
-- `STUDIO_ICAL_URL`
-- `ONEBR_ICAL_URL`
-
-### Start the app
+One-time setup:
 
 ```bash
-pnpm dev
+brew install stripe/stripe-cli/stripe
+stripe login
 ```
 
-### Start Stripe webhook forwarding (separate shell)
+Run the smoke test from your own terminal (1Password only serves the `.env` pipe to your interactive shell, not agent/sandboxed shells):
 
 ```bash
-stripe listen --forward-to http://localhost:3000/api/webhooks/stripe
+scripts/checkout-smoke.sh up # approve the 1Password prompt when it appears
+# drive a booking through the UI; pay with Stripe test card 4242 4242 4242 4242
+scripts/checkout-smoke.sh down
 ```
 
-Use the printed `whsec_...` value as `STRIPE_WEBHOOK_SECRET`.
+`up` starts `stripe listen`, writes the rotating webhook secret to `.env.local`, and boots `pnpm dev`. Verify in the log paths it prints: `checkout.session.completed [200]` in the stripe log, no `Resend error:` in the dev log.
 
-### Checkout smoke (PriceLabs + Stripe)
-
-1. Go through booking in the UI (or `POST /api/checkout`) with valid unit, dates, and guest info.
-2. Open the returned Stripe Checkout URL.
-3. Pay with Stripe test card `4242 4242 4242 4242` (any future expiry/CVC).
-
-### Webhook + email smoke (Stripe webhook + Resend)
-
-After successful test payment, Stripe sends `checkout.session.completed`.
-
-`/api/webhooks/stripe` should verify signature and send:
-
-- guest confirmation email
-- host notification email (`HOST_EMAIL`)
+> ⚠️ The `tumwater-stays-dev` 1Password environment must contain only `sk_test_` / `pk_test_` keys. If the production environment ever gets linked to `.env`, `pnpm dev` will use live keys and charge real cards.
 
 ### Contact smoke (Resend direct)
 
@@ -69,27 +51,8 @@ curl -X POST http://localhost:3000/api/contact \
   -d '{"name":"Smoke Tester","email":"delivered@resend.dev","message":"API smoke test","dates":"2026-06-10 to 2026-06-12"}'
 ```
 
-Expected response: `{"success":true}` and delivery in your test inbox flow.
-
-### Env naming note
-
-If only `*_TEST_*` env names are set in Vercel, duplicate them to the canonical runtime names above.
+Expected: `{"success":true}` and delivery via your test Resend inbox.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
