@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@stripe/stripe-js':
-        specifier: ^9.4.0
-        version: 9.4.0
+        specifier: ^9.6.0
+        version: 9.6.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -1547,8 +1547,8 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
-  '@stripe/stripe-js@9.4.0':
-    resolution: {integrity: sha512-zXG86DnoLU5nH2U18tX5ApTE3IAm+txoiPm4YFyEtRS0K5y7ZDH9M8e1Le/cZyI6wvW3BkJn2daZe2FqZOrSSg==}
+  '@stripe/stripe-js@9.6.0':
+    resolution: {integrity: sha512-v5MebYvJbddSRn15fknxTVwypJPzjeIXI1Q2HBxCBrQieWna8PC+RXEVUZ3F4ANAeILEj97HzFlr0r7CXvG7ZA==}
     engines: {node: '>=12.16'}
 
   '@swc/helpers@0.5.15':
@@ -5888,7 +5888,7 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@stripe/stripe-js@9.4.0': {}
+  '@stripe/stripe-js@9.6.0': {}
 
   '@swc/helpers@0.5.15':
     dependencies:
