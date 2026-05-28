@@ -5,13 +5,10 @@ export type BookedRange = {
   end: Date;
 };
 
-// iCal feeds represent bookings as either VALUE=DATE (calendar-date floating)
-// or timed UTC datetimes (e.g. checkout at 10:00Z). We want hotel-style
-// "this calendar date is booked" semantics in both cases — the time-of-day
-// on a checkout boundary must not bleed past local midnight in another
-// timezone, or the checkout day will display as booked. Build a Date at
-// local midnight from the iCal time's own year/month/day so downstream
-// comparisons against calendar dates (also at local midnight) are stable.
+// Airbnb iCal feeds use DTSTART;VALUE=DATE / DTEND;VALUE=DATE — floating
+// calendar dates with no time-of-day. Build a Date at local midnight from
+// the iCal time's own year/month/day so downstream comparisons against
+// calendar dates (also at local midnight) are timezone-stable.
 function toLocalMidnight(time: ICAL.Time): Date {
   return new Date(time.year, time.month - 1, time.day);
 }
