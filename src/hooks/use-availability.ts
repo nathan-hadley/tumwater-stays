@@ -7,6 +7,14 @@ export type BookedRange = {
   end: Date;
 };
 
+// Parse YYYY-MM-DD as a local-midnight Date. `new Date("2026-06-19")`
+// would interpret the string as UTC and shift the day backwards in any
+// timezone west of UTC, re-introducing the off-by-one calendar drift.
+function parseLocalDate(s: string): Date {
+  const [y, m, d] = s.split("-").map(Number) as [number, number, number];
+  return new Date(y, m - 1, d);
+}
+
 const fetcher = (url: string) =>
   fetch(url)
     .then((res) => {
@@ -15,8 +23,8 @@ const fetcher = (url: string) =>
     })
     .then((data): BookedRange[] =>
       data.bookedRanges.map((r: { start: string; end: string }) => ({
-        start: new Date(r.start),
-        end: new Date(r.end),
+        start: parseLocalDate(r.start),
+        end: parseLocalDate(r.end),
       }))
     );
 
