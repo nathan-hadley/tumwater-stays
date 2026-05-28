@@ -2,10 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { parseIcal } from "@/lib/ical-parser";
 
-// Send date-only YYYY-MM-DD over the wire so no UTC time component
-// reaches the client — `new Date("2026-06-19T00:00:00.000Z")` would
-// parse to the previous calendar day in any timezone west of UTC, which
-// is exactly the off-by-one shift the calendar showed.
+// Date-only wire format — anything with a time component would be
+// reinterpreted in the client's timezone.
 function toIsoDate(d: Date): string {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, "0");

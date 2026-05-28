@@ -81,9 +81,6 @@ describe("useAvailability", () => {
     });
 
     expect(result.current.error).toBeNull();
-    // Local-midnight construction is required: `new Date("2026-06-10")`
-    // would interpret the string as UTC, shifting the day backwards in any
-    // timezone west of UTC and reintroducing the calendar drift.
     expect(result.current.bookedRanges).toEqual([
       { start: new Date(2026, 5, 10), end: new Date(2026, 5, 12) },
       { start: new Date(2026, 6, 1), end: new Date(2026, 6, 3) },

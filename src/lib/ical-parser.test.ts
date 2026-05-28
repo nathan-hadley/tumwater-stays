@@ -19,13 +19,7 @@ SUMMARY:Booked
 END:VEVENT
 END:VCALENDAR`;
 
-// Airbnb's per-reservation iCal entries use timed UTC datetimes —
-// e.g. DTSTART:20260619T160000Z / DTEND:20260620T100000Z for a 1-night
-// stay checking in Jun 19 and out Jun 20. ical.js's toJSDate() carries
-// that UTC instant through unchanged; on a Pacific viewer this lands
-// the booking on Jun 20 instead of Jun 19. The parser must collapse
-// timed entries to their calendar date so the day blocked matches what
-// the host sees in Airbnb.
+// A timed UTC booking — the format Airbnb uses for real reservations.
 const TIMED_UTC_ICAL = `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Test//EN
@@ -53,9 +47,7 @@ describe("parseIcal", () => {
     expect(first?.end.getHours()).toBe(0);
   });
 
-  it("collapses Airbnb's timed UTC entries to the iCal calendar date", () => {
-    // Regression: previously these landed a day later on Pacific viewers
-    // because the UTC instant survived the round trip.
+  it("collapses timed UTC entries to the iCal calendar date", () => {
     const [range] = parseIcal(TIMED_UTC_ICAL);
     expect(range?.start.getFullYear()).toBe(2026);
     expect(range?.start.getMonth()).toBe(5);
@@ -73,8 +65,7 @@ describe("isDateBooked", () => {
     expect(isDateBooked(new Date(2026, 5, 2), ranges)).toBe(true);
   });
 
-  it("returns false for the checkout day so same-day turnover is allowed", () => {
-    // DTEND is exclusive: the checkout day stays selectable as a new check-in.
+  it("returns false for the checkout day (DTEND is exclusive)", () => {
     expect(isDateBooked(new Date(2026, 5, 5), ranges)).toBe(false);
   });
 

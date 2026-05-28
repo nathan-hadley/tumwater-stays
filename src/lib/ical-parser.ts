@@ -5,13 +5,8 @@ export type BookedRange = {
   end: Date;
 };
 
-// Airbnb's per-reservation iCal entries use timed UTC datetimes
-// (e.g. DTSTART:20260619T160000Z). ical.js's toJSDate() carries that
-// instant through unchanged, so on a non-UTC viewer the booking lands
-// one calendar day off when compared at local midnight. Read the iCal
-// time's own year/month/day and build a Date at local midnight — the
-// booking is treated as a calendar-date range, and downstream
-// comparisons against local-midnight calendar days are stable.
+// Use the iCal date components as a calendar date, ignoring any
+// time-of-day, so bookings don't shift across viewer timezones.
 function toLocalMidnight(time: ICAL.Time): Date {
   return new Date(time.year, time.month - 1, time.day);
 }
