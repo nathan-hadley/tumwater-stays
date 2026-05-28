@@ -63,7 +63,7 @@ describe("useAvailability", () => {
     });
   });
 
-  it("maps fetched booked ranges into Date objects", async () => {
+  it("maps YYYY-MM-DD booked ranges into local-midnight Date objects", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue({
       ok: true,
       json: vi.fn().mockResolvedValue({
@@ -81,10 +81,15 @@ describe("useAvailability", () => {
     });
 
     expect(result.current.error).toBeNull();
+    // Local-midnight construction is required: `new Date("2026-06-10")`
+    // would interpret the string as UTC, shifting the day backwards in
+    // timezones west of UTC and re-introducing the checkout-day bug.
     expect(result.current.bookedRanges).toEqual([
-      { start: new Date("2026-06-10"), end: new Date("2026-06-12") },
-      { start: new Date("2026-07-01"), end: new Date("2026-07-03") },
+      { start: new Date(2026, 5, 10), end: new Date(2026, 5, 12) },
+      { start: new Date(2026, 6, 1), end: new Date(2026, 6, 3) },
     ]);
+    expect(result.current.bookedRanges[0]?.start.getHours()).toBe(0);
+    expect(result.current.bookedRanges[0]?.end.getHours()).toBe(0);
   });
 
   it("maps fetch failures to a stable hook error state", async () => {

@@ -19,19 +19,48 @@ SUMMARY:Booked
 END:VEVENT
 END:VCALENDAR`;
 
+// Channel managers like VRBO export checkout boundaries as timed UTC
+// timestamps (e.g. 10:00Z = check-out time). The parser must collapse
+// these to calendar dates so the checkout day stays available regardless
+// of viewer timezone — the regression that motivated this fix.
+const TIMED_UTC_ICAL = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Test//EN
+BEGIN:VEVENT
+UID:booking-timed@test
+DTSTART:20260601T160000Z
+DTEND:20260605T100000Z
+SUMMARY:Booked
+END:VEVENT
+END:VCALENDAR`;
+
 describe("parseIcal", () => {
   it("returns one BookedRange per VEVENT", () => {
     const ranges = parseIcal(SAMPLE_ICAL);
     expect(ranges).toHaveLength(2);
   });
 
-  it("parses event start/end dates", () => {
+  it("parses VALUE=DATE events at local midnight of the iCal date", () => {
     const [first] = parseIcal(SAMPLE_ICAL);
-    // VALUE=DATE events are floating; assert via local components.
     expect(first?.start.getFullYear()).toBe(2026);
     expect(first?.start.getMonth()).toBe(5); // June (0-indexed)
     expect(first?.start.getDate()).toBe(1);
+    expect(first?.start.getHours()).toBe(0);
     expect(first?.end.getDate()).toBe(5);
+    expect(first?.end.getHours()).toBe(0);
+  });
+
+  it("collapses timed UTC iCal events to local-midnight calendar dates", () => {
+    const [range] = parseIcal(TIMED_UTC_ICAL);
+    // Boundary date components should match the iCal date parts, with no
+    // time-of-day component — otherwise local-midnight comparisons against
+    // the checkout day would shift across timezones.
+    expect(range?.start.getFullYear()).toBe(2026);
+    expect(range?.start.getMonth()).toBe(5);
+    expect(range?.start.getDate()).toBe(1);
+    expect(range?.start.getHours()).toBe(0);
+    expect(range?.end.getDate()).toBe(5);
+    expect(range?.end.getHours()).toBe(0);
   });
 });
 
@@ -48,5 +77,11 @@ describe("isDateBooked", () => {
 
   it("returns false for a date outside all ranges", () => {
     expect(isDateBooked(new Date(2026, 5, 20), ranges)).toBe(false);
+  });
+
+  it("treats the checkout day as available for timed UTC iCal events", () => {
+    const timedRanges = parseIcal(TIMED_UTC_ICAL);
+    expect(isDateBooked(new Date(2026, 5, 4), timedRanges)).toBe(true); // last night
+    expect(isDateBooked(new Date(2026, 5, 5), timedRanges)).toBe(false); // checkout
   });
 });
