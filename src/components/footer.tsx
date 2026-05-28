@@ -71,7 +71,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Airbnb — The Suite
+                  Airbnb — The Apartment
                 </a>
               </li>
             </ul>

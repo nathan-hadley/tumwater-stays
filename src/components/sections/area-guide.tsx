@@ -3,8 +3,11 @@
 import { Utensils, Trees, Heart, ShoppingBag, Mountain, type LucideIcon } from "lucide-react";
 import { useState } from "react";
 
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { areaGuide, type GuideCategory } from "@/data/area-guide";
+
+const INITIAL_VISIBLE = 3;
 
 const iconMap: Record<string, LucideIcon> = {
   utensils: Utensils,
@@ -24,11 +27,15 @@ const categories: { label: string; value: GuideCategory | "all" }[] = [
 
 export function AreaGuide() {
   const [activeCategory, setActiveCategory] = useState<GuideCategory | "all">("all");
+  const [expanded, setExpanded] = useState(false);
 
   const filtered =
     activeCategory === "all"
       ? areaGuide
       : areaGuide.filter((item) => item.category === activeCategory);
+
+  const visible = expanded ? filtered : filtered.slice(0, INITIAL_VISIBLE);
+  const hasMore = filtered.length > INITIAL_VISIBLE;
 
   return (
     <section id="area-guide" className="py-20 px-4 bg-surface-dark">
@@ -54,7 +61,10 @@ export function AreaGuide() {
           {categories.map((cat) => (
             <button
               key={cat.value}
-              onClick={() => setActiveCategory(cat.value)}
+              onClick={() => {
+                setActiveCategory(cat.value);
+                setExpanded(false);
+              }}
               className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                 activeCategory === cat.value
                   ? "bg-accent-warm text-white"
@@ -68,7 +78,7 @@ export function AreaGuide() {
 
         {/* Card grid */}
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-          {filtered.map((item) => {
+          {visible.map((item) => {
             const Icon = iconMap[item.icon];
             return (
               <Card key={item.name} className="border-0 shadow-none bg-surface">
@@ -81,6 +91,14 @@ export function AreaGuide() {
             );
           })}
         </div>
+
+        {hasMore && (
+          <div className="mt-8 flex justify-center">
+            <Button variant="outline" onClick={() => setExpanded((prev) => !prev)}>
+              {expanded ? "Show less" : "Show more"}
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   );
