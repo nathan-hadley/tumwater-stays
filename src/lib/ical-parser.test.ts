@@ -25,16 +25,15 @@ describe("parseIcal", () => {
     expect(ranges).toHaveLength(2);
   });
 
-  it("parses VALUE=DATE events at local midnight with no time-of-day", () => {
-    // Local midnight (hours=0) is the contract that keeps downstream
-    // calendar-date comparisons timezone-stable on the client.
+  it("parses event start dates and shifts end back to the checkout day", () => {
+    // Airbnb DTEND=20260605 means the guest checks out Jun 4 (DTEND - 1);
+    // the parser exposes that day as `end` so the checkout day is treated
+    // as available by the calendar.
     const [first] = parseIcal(SAMPLE_ICAL);
     expect(first?.start.getFullYear()).toBe(2026);
     expect(first?.start.getMonth()).toBe(5); // June (0-indexed)
     expect(first?.start.getDate()).toBe(1);
-    expect(first?.start.getHours()).toBe(0);
-    expect(first?.end.getDate()).toBe(5);
-    expect(first?.end.getHours()).toBe(0);
+    expect(first?.end.getDate()).toBe(4);
   });
 });
 
@@ -45,8 +44,9 @@ describe("isDateBooked", () => {
     expect(isDateBooked(new Date(2026, 5, 2), ranges)).toBe(true);
   });
 
-  it("returns false for the checkout day (end is exclusive)", () => {
-    expect(isDateBooked(new Date(2026, 5, 5), ranges)).toBe(false);
+  it("returns false for the checkout day so same-day turnover is allowed", () => {
+    // DTEND=20260605 -> checkout day Jun 4 is available for a new check-in.
+    expect(isDateBooked(new Date(2026, 5, 4), ranges)).toBe(false);
   });
 
   it("returns false for a date outside all ranges", () => {

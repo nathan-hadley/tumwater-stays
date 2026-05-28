@@ -5,14 +5,6 @@ export type BookedRange = {
   end: Date;
 };
 
-// Airbnb iCal feeds use DTSTART;VALUE=DATE / DTEND;VALUE=DATE — floating
-// calendar dates with no time-of-day. Build a Date at local midnight from
-// the iCal time's own year/month/day so downstream comparisons against
-// calendar dates (also at local midnight) are timezone-stable.
-function toLocalMidnight(time: ICAL.Time): Date {
-  return new Date(time.year, time.month - 1, time.day);
-}
-
 export function parseIcal(icalString: string): BookedRange[] {
   const jcal = ICAL.parse(icalString);
   const comp = new ICAL.Component(jcal);
@@ -20,9 +12,14 @@ export function parseIcal(icalString: string): BookedRange[] {
 
   return events.map((event) => {
     const vevent = new ICAL.Event(event);
+    const end = vevent.endDate.toJSDate();
+    // Airbnb's iCal includes the checkout day inside DTEND, so a booking
+    // checking out on Jun 5 exports as DTEND=20260606. Shift end back by
+    // one so the checkout day stays available for same-day turnover.
+    end.setDate(end.getDate() - 1);
     return {
-      start: toLocalMidnight(vevent.startDate),
-      end: toLocalMidnight(vevent.endDate),
+      start: vevent.startDate.toJSDate(),
+      end,
     };
   });
 }
