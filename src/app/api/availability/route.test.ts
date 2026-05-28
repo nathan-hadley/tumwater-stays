@@ -52,14 +52,14 @@ describe("GET /api/availability", () => {
     });
   });
 
-  it("returns parsed booked ranges as ISO strings", async () => {
+  it("returns parsed booked ranges as date-only YYYY-MM-DD strings", async () => {
     process.env.STUDIO_ICAL_URL = "https://example.com/studio.ics";
     const fetchMock = vi.fn().mockResolvedValue(new Response("BEGIN:VCALENDAR"));
     vi.stubGlobal("fetch", fetchMock);
     parseIcalMock.mockReturnValue([
       {
-        start: new Date("2026-06-01T00:00:00.000Z"),
-        end: new Date("2026-06-03T00:00:00.000Z"),
+        start: new Date(2026, 5, 1),
+        end: new Date(2026, 5, 3),
       },
     ]);
 
@@ -68,12 +68,7 @@ describe("GET /api/availability", () => {
 
     expect(response.status).toBe(200);
     expect(data).toEqual({
-      bookedRanges: [
-        {
-          start: "2026-06-01T00:00:00.000Z",
-          end: "2026-06-03T00:00:00.000Z",
-        },
-      ],
+      bookedRanges: [{ start: "2026-06-01", end: "2026-06-03" }],
     });
     expect(parseIcalMock).toHaveBeenCalledWith("BEGIN:VCALENDAR");
   });

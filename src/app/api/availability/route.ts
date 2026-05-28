@@ -2,6 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { parseIcal } from "@/lib/ical-parser";
 
+// Send date-only YYYY-MM-DD over the wire so no UTC time component
+// reaches the client — `new Date("2026-06-19T00:00:00.000Z")` would
+// parse to the previous calendar day in any timezone west of UTC, which
+// is exactly the off-by-one shift the calendar showed.
+function toIsoDate(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
 export async function GET(request: NextRequest) {
   const unit = request.nextUrl.searchParams.get("unit");
 
@@ -18,8 +29,8 @@ export async function GET(request: NextRequest) {
     const bookedRanges = parseIcal(icalText);
     return NextResponse.json({
       bookedRanges: bookedRanges.map((r) => ({
-        start: r.start.toISOString(),
-        end: r.end.toISOString(),
+        start: toIsoDate(r.start),
+        end: toIsoDate(r.end),
       })),
     });
   } catch {
